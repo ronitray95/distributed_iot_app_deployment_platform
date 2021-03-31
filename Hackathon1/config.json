@@ -1,0 +1,10 @@
+{
+    "sensorTypes": ["Temperature", "Ultrasonic"],
+    "sensorInstances": [2, 1],
+    "fuctionNames": ["readTemperature", "readUltrasonic"],
+    "outputFormat": "File",
+    "schedulingInfo": "timestamp",
+    "applicationName": "Smart Hospital",
+    "algorithm": "algo1.py"
+
+}
