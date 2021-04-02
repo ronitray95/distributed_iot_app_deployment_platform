@@ -1,0 +1,1 @@
+{"conditions": [{"pulse_rate": [[">", 140], ["<", 40]]}], "action": []}
