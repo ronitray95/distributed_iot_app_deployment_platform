@@ -103,9 +103,9 @@ def running_runtime():
     print(return_status)
     producer.send(KAFKA_TOPIC_NODE_SERVER_ASSIGN_LIST,
                   json.dumps(return_status))
-    print("test")
+    #print("test")
     sleep(0.001)
-    # return return_status
+    return ip, port
 
 #running_runtime() <------------- JUST CALL THIS FUNCTION FROM YOUR MODULE
 
