@@ -1,0 +1,8 @@
+{
+  "app_name": "SmartIrrigation",
+  "sensor_types": {
+    "temp_sensor": ["TS1"]
+  },
+  "notification" : [],
+  "scripts": ""
+}
