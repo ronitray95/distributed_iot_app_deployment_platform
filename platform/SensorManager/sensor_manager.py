@@ -1,4 +1,4 @@
-import sensor_simulator as simulator
+import bind_data
 import comm_module as cm
 from kafka import KafkaConsumer, KafkaProducer
 import threading
@@ -26,8 +26,8 @@ Binds the sensor data to a topic
 '''
 
 
-def start_sensor(sensor_info):
-    t = threading.Thread(target=simulator.simulate, kwargs={'sensor_info': sensor_info})
+def bind_sensor(sensor_info):
+    t = threading.Thread(target=bind_data.simulate, kwargs={'sensor_info': sensor_info})
     t.start()
 
 
@@ -69,7 +69,7 @@ def run_sensors():
                 topic = stype + "_" + str(SENSOR_TYPES[stype])
 
                 sensor_info = {'type': stype, 'ip': ip, 'port': port, 'topic': topic}
-                start_sensor(sensor_info)
+                bind_sensor(sensor_info)
 
                 with open('running_sensors.txt', 'a') as f:
                     line = sinfo + ":" + nwinfo + ":" + topic
@@ -77,6 +77,11 @@ def run_sensors():
                     f.write(line + '\n')
 
         time.sleep(10)
+
+        # Testing controller functioning
+        # print("Turning off AC.......")
+        # msg = {"type": "ac", "value": 0}
+        # controller(msg)
 
     registry.close()
 
@@ -86,7 +91,7 @@ def controller(msg):
     topic = msg['type']
     status = msg['value']
     msg = {"status": status}
-    simulator.dummy_ac(status)
+    bind_data.dummy_ac(status)
     # cm.send_message(topic, msg)
 
 
