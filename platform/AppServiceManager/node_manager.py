@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from _thread import *
 import random
 import string
