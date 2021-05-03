@@ -5,6 +5,9 @@ import json
 from kafka import KafkaConsumer, KafkaProducer
 import random
 from datetime import datetime, timedelta
+import sys
+
+sys.path.insert(0, sys.path[0][:sys.path[0].rindex('/')] + '/comm_manager')
 import comm_module as cm
 
 

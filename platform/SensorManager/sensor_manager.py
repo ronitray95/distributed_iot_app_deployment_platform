@@ -1,9 +1,12 @@
 import bind_data
-import comm_module as cm
 from kafka import KafkaConsumer, KafkaProducer
 import threading
 import json
 import time
+import sys
+
+sys.path.insert(0, sys.path[0][:sys.path[0].rindex('/')] + '/comm_manager')
+import comm_module as cm
 
 
 SENSOR_TYPES = {'temp': -1,'AC': -1}

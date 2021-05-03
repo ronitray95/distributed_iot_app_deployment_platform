@@ -1,5 +1,8 @@
 import random
 import time
+import sys
+
+sys.path.insert(0, sys.path[0][:sys.path[0].rindex('/')] + '/comm_manager')
 import comm_module as cm
 from kafka import KafkaConsumer
 import json

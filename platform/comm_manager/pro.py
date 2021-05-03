@@ -12,22 +12,6 @@ msg={"msg":"msg from app mgr"}
 cm.send_message("AS",msg)
 
 # cm.send_message_normal("AS",msg)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # producer = KafkaProducer(bootstrap_servers = 'localhost:9092')
 
 # def send_message(topic,msg):

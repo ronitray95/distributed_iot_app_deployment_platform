@@ -2,10 +2,13 @@ import _thread
 import requests
 import json
 from kafka import KafkaConsumer
-import comm_module as cm
 import ServerLifeCycleManager as sl
 import threading
 import os
+import sys
+
+sys.path.insert(0, sys.path[0][:sys.path[0].rindex('/')] + '/comm_manager')
+import comm_module as cm
 
 jobID = {}
 

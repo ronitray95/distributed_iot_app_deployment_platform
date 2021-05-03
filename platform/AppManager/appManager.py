@@ -9,6 +9,10 @@ import json
 import threading
 from _thread import *
 import time
+import sys
+
+sys.path.insert(0, sys.path[0][:sys.path[0].rindex('/')] + '/comm_manager')
+
 import comm_module as cm
 
 curpath=str(os.path.dirname(os.path.realpath(__file__)))

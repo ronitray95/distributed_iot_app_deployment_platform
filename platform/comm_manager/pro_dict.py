@@ -8,9 +8,6 @@ def send_message(topic,mess):
   producer.close()
 
 
-
-
-
 mess={"msg":"my msg"}
 
 send_message("AS",mess)
