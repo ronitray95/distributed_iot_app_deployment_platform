@@ -14,7 +14,7 @@ sys.path.insert(0, sys.path[0][:sys.path[0].rindex('/')] + '/comm_manager')
 import comm_module as cm
 
 
-SENSOR_TYPES = {'temp': -1,'AC': -1}
+SENSOR_TYPES = {'temp': -1,'biometric': -1, 'gps': -1, 'lux': -1}
 
 sensor_objects = {}
 
@@ -41,6 +41,25 @@ def bind_sensor(sensor_info):
         topic = sensor_info['topic']
         obj = TempSensor(topic, ip=sensor_info['ip'], port=sensor_info['port'])
         sensor_objects[topic] = obj
+
+    elif sensor_type == 'lux':
+        topic = sensor_info['topic']
+        obj = LuxSensor(topic, ip=sensor_info['ip'], port=sensor_info['port'])
+        sensor_objects[topic] = obj
+
+    elif sensor_type == 'biometric':
+        topic = sensor_info['topic']
+        obj = BiometricSensor(topic, ip=sensor_info['ip'], port=sensor_info['port'])
+        sensor_objects[topic] = obj
+
+    elif sensor_type == 'gps':
+        topic = sensor_info['topic']
+        obj = GPSSensor(topic, ip=sensor_info['ip'], port=sensor_info['port'])
+        sensor_objects[topic] = obj
+
+    else:
+        print("ERROR: Invalid Sensor Type")
+        return
 
     # elif sensor_type == 'AC':
     #     ac_up(sensor_info)

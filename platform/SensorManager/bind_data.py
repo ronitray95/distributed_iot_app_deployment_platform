@@ -26,30 +26,27 @@ from simulators import *
 
 def simulate(sensor_obj):   # sensor_info = {'type': stype, 'ip': ip, 'port': port, 'topic': topic}
 
-    sensor_type = sensor_obj.type
+    # sensor_type = sensor_obj.type
 
-    if sensor_type == 'temp':
+    # if sensor_type == 'temp':
         # temp_sensor = TempSensor(sensor_info['topic'], ip=sensor_info['ip'], port=sensor_info['port'])
-        topic = sensor_obj.id
-        while True:
-            # consumer = KafkaConsumer(controller_topic, bootstrap_servers='localhost:9092', value_deserializer=lambda m: json.loads(m.decode('utf-8')))
-            # for message in consumer:
-            #     data = message.value
-            #     break
-            if sensor_obj.controller == -1:
-                sensor_obj.temp_up()
-            else:
-                sensor_obj.temp_down()
+    topic = sensor_obj.id
+    while True:
+        # consumer = KafkaConsumer(controller_topic, bootstrap_servers='localhost:9092', value_deserializer=lambda m: json.loads(m.decode('utf-8')))
+        # for message in consumer:
+        #     data = message.value
+        #     break
+        data, controller = sensor_obj.genRandom()
 
-            output = sensor_obj.temp
-            controller = sensor_obj.controller
-            print(f"{sensor_obj.id} ---> Temp:", output)
-            print(f"{sensor_obj.id} ---> Controller:", controller)
-            msg = {'data': output, "controller": controller}
+        # output = sensor_obj.temp
+        # controller = sensor_obj.controller
+        print(f"{sensor_obj.id} ---> Data:", data)
+        # print(f"{sensor_obj.id} ---> Controller:", controller)
+        msg = {'data': data}
 
-            # TODO: Uncomment next line
-            cm.send_message(topic, msg)
-            time.sleep(4)
+        # TODO: Uncomment next line
+        cm.send_message(topic, msg)
+        time.sleep(4)
 
     # elif sensor_type == 'AC':
     #     ac_up(sensor_info)

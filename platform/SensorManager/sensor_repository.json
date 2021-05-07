@@ -8,7 +8,23 @@
       },
       "controller_type": "AC"
    },
-   "AC": {
+   "gps": {
+      "id" : 1,
+      "sensor_id":"acc1",
+      "name":"temperature",
+      "output": {
+         "status" : -1
+      }
+   },
+   "lux": {
+      "id" : 1,
+      "sensor_id":"acc1",
+      "name":"temperature",
+      "output": {
+         "status" : -1
+      }
+   },
+   "biometric": {
       "id" : 1,
       "sensor_id":"acc1",
       "name":"temperature",

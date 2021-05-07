@@ -65,8 +65,10 @@ def getdata():
         d = sm.get_data(topic)
         data.append(d)
 
-    payload = {"data": data}
-    return jsonify(payload)
+    # payload = {"data": data}
+    # return jsonify(payload)
+
+    return {"sensor", data}, 200
 
 
 @app.route("/set-data", methods=["POST"])
@@ -79,7 +81,7 @@ def setdata():
         msg = {"topic":topic, "value":controllers[topic]}
         sm.get_data(msg)
 
-    return
+    return {'status': 'Success'}, 200
 
 
 def init_services():
