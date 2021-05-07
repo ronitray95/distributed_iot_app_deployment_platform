@@ -14,9 +14,10 @@ sys.path.insert(0, sys.path[0][:sys.path[0].rindex('/')] + '/comm_manager')
 import comm_module as cm
 
 
-SENSOR_TYPES = {'temp': -1,'biometric': -1, 'gps': -1, 'lux': -1}
+SENSOR_TYPES = {'TEMP': -1,'BIOMETRIC': -1, 'GPS': -1, 'LIGHT': -1}
 
 sensor_objects = {}
+
 
 def dummy1(topicid, handler):
     cm.consume_msg(topicid, handler)
@@ -37,24 +38,25 @@ Binds the sensor data to a topic
 
 def bind_sensor(sensor_info):
     sensor_type = sensor_info['type']
-    if sensor_type == 'temp':
+    print("Type")
+    if sensor_type == 'TEMP':
         topic = sensor_info['topic']
-        obj = TempSensor(topic, ip=sensor_info['ip'], port=sensor_info['port'])
+        obj = TempSensor(topic, sensor_info['desc'], ip=sensor_info['ip'], loc=sensor_info['loc'], port=sensor_info['port'])
         sensor_objects[topic] = obj
 
-    elif sensor_type == 'lux':
+    elif sensor_type == 'LIGHT':
         topic = sensor_info['topic']
-        obj = LuxSensor(topic, ip=sensor_info['ip'], port=sensor_info['port'])
+        obj = LuxSensor(topic, sensor_info['desc'], ip=sensor_info['ip'], loc=sensor_info['loc'], port=sensor_info['port'])
         sensor_objects[topic] = obj
 
-    elif sensor_type == 'biometric':
+    elif sensor_type == 'BIOMETRIC':
         topic = sensor_info['topic']
-        obj = BiometricSensor(topic, ip=sensor_info['ip'], port=sensor_info['port'])
+        obj = BiometricSensor(topic, sensor_info['desc'], ip=sensor_info['ip'], loc=sensor_info['loc'], port=sensor_info['port'])
         sensor_objects[topic] = obj
 
-    elif sensor_type == 'gps':
+    elif sensor_type == 'GPS':
         topic = sensor_info['topic']
-        obj = GPSSensor(topic, ip=sensor_info['ip'], port=sensor_info['port'])
+        obj = GPSSensor(topic, sensor_info['desc'], ip=sensor_info['ip'], loc=sensor_info['loc'], port=sensor_info['port'])
         sensor_objects[topic] = obj
 
     else:
@@ -114,7 +116,7 @@ def run_sensors():
                 topic = stype + "_" + str(SENSOR_TYPES[stype])
 
                 sensor_info = {'type': stype, 'ip': ip, 'port': port, 'topic': topic, 'desc': desc, 'loc':loc}
-                # bind_sensor(sensor_info)
+                bind_sensor(sensor_info)
                 print(sensor_info)
                 with open('running_sensors.txt', 'a', newline='') as f:
                     # line = sinfo + ":" + nwinfo + ":" + topic

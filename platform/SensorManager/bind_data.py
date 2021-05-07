@@ -46,7 +46,7 @@ def simulate(sensor_obj):   # sensor_info = {'type': stype, 'ip': ip, 'port': po
 
         # TODO: Uncomment next line
         cm.send_message(topic, msg)
-        time.sleep(4)
+        time.sleep(1)
 
     # elif sensor_type == 'AC':
     #     ac_up(sensor_info)

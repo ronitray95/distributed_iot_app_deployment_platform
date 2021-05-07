@@ -19,8 +19,8 @@ class ACController:
 
 
 class TempSensor:
-    def __init__(self, id, name=None, loc=None, temp=20, ip='0.0.0.0', port='1234'):
-        self.type = 'temp'
+    def __init__(self, id, desc, name=None, loc=None, temp=20, ip='0.0.0.0', port='1234'):
+        self.type = 'TEMP'
         self.id = id
         self.name = name
         self.location = loc
@@ -30,6 +30,7 @@ class TempSensor:
         self.controller = -1
         self.low = 15
         self.high = 45
+        self.placeholder = desc
 
     def temp_up(self):
         inc = round(random.uniform(0, 1))
@@ -53,8 +54,8 @@ class TempSensor:
 
 
 class LuxSensor:
-    def __init__(self, id, name=None, loc=None, ip='0.0.0.0', port='1234'):
-        self.type = 'lux'
+    def __init__(self, id, desc, name=None, loc=None, ip='0.0.0.0', port='1234'):
+        self.type = 'LIGHT'
         self.id = id
         self.name = name
         self.ip = ip
@@ -64,32 +65,34 @@ class LuxSensor:
         self.high = 500
         self.controller = -1
         self.lux = 0
+        self.placeholder = desc
 
     def genRandom(self):
         self.lux = random.randrange(self.low, self.high)
         return 0 if self.controller == -1 else self.lux, self.controller
 
 
-list_of_people = list(range(50))
+list_of_people = list(range(150))
 list_of_people_boarded = []
 
 
 class BiometricSensor:
-    def __init__(self,  id, name=None, loc=None, ip='0.0.0.0', port='1234'):
-        self.type = 'biometric'
+    def __init__(self,  id, desc, name=None, loc=None, ip='0.0.0.0', port='1234'):
+        self.type = 'BIOMETRIC'
         self.id = id
         self.name = name
         self.ip = ip
         self.port = port
         self.location = loc
         self.controller = -1
+        self.placeholder = desc
 
     def genRandom(self):
         ch = random.choice(list_of_people)
         while ch in list_of_people_boarded:
             ch = random.choice(list_of_people)
         list_of_people_boarded.append(ch)
-        return [self.location, ch], self.controller
+        return [self.placeholder, ch], self.controller
 
 
 iiit_loc = [30.44523, 40.54232]
@@ -102,14 +105,15 @@ gps_weights = [0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2]
 
 
 class GPSSensor:
-    def __init__(self,  id, name=None, loc=None, ip='0.0.0.0', port='1234'):
-        self.type = 'gps'
+    def __init__(self,  id, desc, name=None, loc=None, ip='0.0.0.0', port='1234'):
+        self.type = 'GPS'
         self.id = id
         self.name = name
         self.ip = ip
         self.port = port
         self.location = loc
         self.controller = -1
+        self.placeholder = desc
 
     def genRandom(self):
         ch = random.choice(gps_weights)
@@ -118,5 +122,5 @@ class GPSSensor:
         # elif ch == 1:
         #     return [self.location, random.choice(barricades)]
         # else:
-        return [self.location, random.choice(places)], self.controller
+        return [self.placeholder, random.choice(places)], self.controller
 
