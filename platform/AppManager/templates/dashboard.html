@@ -130,72 +130,18 @@ span.psw {
 
 <div id="id01" class="modal">
   
-  <form class="modal-content animate" action="/fill-form" method="POST">
+  <form class="modal-content animate" action="/{{usrname}}/dashboard" method="POST">
 
     <div class="container">
-      <h2><u>Service Request Form</u></h2>
-      
-      <label for="fname"><b>UserName</b></label>
-      <input type="text" placeholder="Enter Username" id="fname" name="userID" required>
 
-      <label for="lname"><b>Developer Name</b></label>
-          <input type="text" id="lname" name="devID" placeholder="Enter App Developer Name here">
-
-      <label for="fname"><b>ApplicationName</b></label>
+      <label for="fname"><b>Application Name</b></label>
       <input type="text" id = "fname" placeholder="Enter Application Name"  name="appID" required>
 
-      <label for="fname"><b>AlgoName</b></label>
+      <label for="fname"><b>Algorithm Name</b></label>
       <input type="text" id="fname" name="algoID" placeholder="Enter algo_id here" required>
 
-      <label for="fname"><b>Sensor Types</b></label>
-      <input type="text" id="fname" name="sensorList" placeholder="Enter comma separated sensor types" required>
-    
+      <button type="submit" value="submit">OK</button>
       
-      <label for="lname"><b>Start Time</b></label>
-      <input type="text" id="lname" name="start_time" placeholder="Enter start time here">
-        
-      <label for="lname"><b>Location</b></label>
-      <input type="text" id="lname" name="location" placeholder="Enter location here">
-
-      <label for="lname"><b>Placeholder</b></label>
-      <input type="text" id="lname" name="placeholder" placeholder="Enter location here">
-      
-      <label for="lname"><b>End Time</b></label>
-      <input type="text" id="lname" name="end_time" placeholder="Enter duration here">
-
-      
-      <label for="fname"><b>Request Type</b></label> 
-      <select name = "request_type">
-          <option value = "immediate" selected>IMMEDIATE</option>
-          <option value = "periodic">PERIODIC</option>
-      </select><br><br>
-
-      <label for="fname"><b>Priority</b></label>
-      <select name = "priority">
-          <option value = "low">  LOW</option>
-          <option value = "medium">MEDIUM</option>
-          <option value = "high" selected>HIGH</option>
-      </select> <br><br>
-
-      <label for="days"><b>Days</b></label>
-      <select id="days" name="days" >
-          <option value="sunday">Sunday</option>
-          <option value="monday">Monday</option>
-
-          <option value="tuesday">Tuesday</option>
-          <option value="wednesday">Wednesday</option>
-          <option value="thursday">Thursday</option>
-          <option value="friday">Friday</option>
-          <option value="saturday">Saturday</option>
-        </select> <br><br>
-      
-        <label for="lname"><b>Duration</b></label>
-        <input type="text" id="lname" name="duration" placeholder="Enter Duration to run" required>
-
-        <label for="lname"><b>Interval</b></label>
-        <input type="text" id="lname" name="interval" placeholder="Enter Intervals" required>
-    <button type="submit" value="submit">Request Sevice</button>
-    
     </div>
 
     <div class="container" style="background-color:#f1f1f1">      

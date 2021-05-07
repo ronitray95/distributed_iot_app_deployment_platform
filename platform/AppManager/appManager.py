@@ -40,10 +40,10 @@ if os.path.isfile("platformUserCreds.txt"):
 			tup = tuple([lst[0], lst[2], lst[3]])
 			userCredSet.add(tup)
 
-schedule_json_lst = ["start_time", "end_time",
-					 "request_type", "priority", "days", "interval", "duration"]
+schedule_json_lst = ["start_time", "end_time","request_type",
+					 "priority", "days", "interval", "duration"]
 other_feilds_lst = ["userID", "appID", "algoID",
-					"form", "location", "devID", "sensorList"]
+					"form", "location", "placeholder","devID", "sensorList"]
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -117,7 +117,7 @@ def login():
 				# if req["dname"]=="Developer":
 				return redirect(url_for('upload', usrname=data["user_id"]))
 			elif x['type'].lower() == data['dname'].lower() and data['dname'].lower() == 'user':
-				return redirect("/fill-form")
+				return redirect(url_for('action', usrname=req["user_id"]))
 			else:
 				flash('Invalid user type')
 				return redirect(request.path) 
@@ -135,6 +135,50 @@ def storeInRepo(username, zipPath):
 	with ZipFile(zipPath, 'r') as zipObj:
 		zipObj.extractall(userRepoPath)
 	os.remove(zipPath)
+
+
+@app.route("/<usrname>/action",methods=["GET","POST"])
+def action(usrname):
+    if request.method=="POST":
+        data=request.form
+        req = dict(data)
+        if req['action'] == 'dashboard':
+            return redirect(url_for('dashboard',usrname=usrname))
+        else:
+            return redirect('/fill-form')
+
+    return render_template("action.html",usrname=usrname)
+
+@app.route("/<usrname>/dashboard",methods=["GET","POST"])
+def dashboard(usrname):
+    if request.method=="POST":
+        data=request.form
+        req = dict(data)
+        #with open("user_details.json") as f:
+        #    details = json.load(f.read())
+
+        #if usrname in details.keys() and req["appID"] in details[usrname].keys() and req["algoID"] in details[usrname]["appID"]:
+        return render_template('monitor.html', filename=usrname+'_'+req["appID"]+'_'+req["algoID"])
+        #else:
+        #    return "No such Application or Algorithm is registered"        
+
+    return render_template("dashboard.html",usrname=usrname)
+
+
+@app.route("/<filename>/monitor",methods=["GET","POST"])
+def monitor(filename):
+    if request.method=="GET":
+        with open("./Data/"+filename, 'r') as f:
+            return '<br>'.join(f.read().split('\n'))
+    if request.method=="POST":
+        data=request.form
+        req = dict[data]
+        if req["act"] == "back":
+            pass
+        if req["act"] == "stop":
+            pass
+    return render_template("monitor.html",filename=filename)
+
 
 
 # uploading the developer file to a directory
