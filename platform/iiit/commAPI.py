@@ -12,13 +12,11 @@ class comm(object):
         pass
 
     def getData(self, id):
-        
-        data = requests.get('http://localhost:port', params={"sensor":id})
+        data = requests.get('http://localhost:9000/fetch', params={"sensor":id})
         return data
 
     def setData(self, id, value):
-
-        ack = requests.get('http://localhost:port', params={"controller":{id:value}})
+        ack = requests.get('http://localhost:9000/modify', params={"controller":{id:value}})
         return ack
 
     def getMailID(self, userID):

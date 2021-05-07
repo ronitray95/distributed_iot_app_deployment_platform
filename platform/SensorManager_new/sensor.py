@@ -37,6 +37,10 @@ class TemperatureSensor:
         time.sleep(self.delay)
         value = self.temp
         self.temp = self.temp+1 if self.isIncreasing == 1 else self.temp-1
+        if self.temp < self.low:
+            self.temp = self.low
+        if self.temp > self.high:
+            self.temp = self.high
         return value
 
     def startListen(self):
