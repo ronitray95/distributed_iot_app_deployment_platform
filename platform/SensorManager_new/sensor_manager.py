@@ -43,6 +43,8 @@ def init_sensors():
 
 @app.route('/fetch')
 def fetchSensorData():
+	if not INIT_STATE:
+		init_sensors()
 	if request.method == 'POST':
 		return 'Not supported', 401
 	x = request.args.get('sensor')
@@ -70,6 +72,8 @@ def fetchSensorData():
 
 @app.route('/modify')
 def modifySensorData():
+	if not INIT_STATE:
+		init_sensors()
 	if request.method == 'POST':
 		return 'Not supported', 401
 	x = request.args.get('controller')
