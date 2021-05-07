@@ -1,2 +1,3 @@
-temp_loc1:207.234.545.22_4343:temp_0
-AC_loc2: 207.46.13.24_3543:AC_0
+loc,desc,type,topic,ip,port
+loc1,pl1,temp,temp_0,207.234.545.22,4343
+loc2,pl2,temp,temp_1,207.234.545.22,4343

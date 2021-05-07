@@ -27,7 +27,7 @@ class TempSensor:
         self.temp = temp
         self.ip = ip
         self.port = port
-        self.controller = None
+        self.controller = -1
 
     def temp_up(self):
         inc = round(random.uniform(0, 1))

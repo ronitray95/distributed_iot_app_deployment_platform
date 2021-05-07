@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import validate_instance
 import sensor_manager as sm
 
@@ -47,13 +47,39 @@ def install():
             desc = str(data.get('desc'))
 
             with open(registry_path, 'a') as f:
-                line = stype + "_" + loc+ ":" + ip + "_" + port
+                line = stype + ":" + desc + "_" + loc + ":" + ip + "_" + port
                 # print(line)
                 f.write(line + '\n')
             return render_template("success.html",message="success")
         else:
             return render_template("invalid.html", message="success")
     return render_template("install_sensor.html", message="success")
+
+
+@app.route("/get-data", methods=["POST"])
+def getdata():
+    payload = request.get_json()
+    topic_list = payload['sensor']
+    data = []
+    for topic in topic_list:
+        d = sm.get_data(topic)
+        data.append(d)
+
+    payload = {"data": data}
+    return jsonify(payload)
+
+
+@app.route("/set-data", methods=["POST"])
+def setdata():
+    payload = request.get_json()
+    controllers = payload['controller']
+    topic_list = list(controllers.keys())
+    # data = []
+    for topic in topic_list:
+        msg = {"topic":topic, "value":controllers[topic]}
+        sm.get_data(msg)
+
+    return
 
 
 def init_services():
