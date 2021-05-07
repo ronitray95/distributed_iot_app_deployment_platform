@@ -1,9 +1,13 @@
+#!/usr/bin/env python3
+
 import bind_data
 from kafka import KafkaConsumer, KafkaProducer
 import threading
 import json
 import time
 import sys
+from flask import *
+from _thread import *
 
 sys.path.insert(0, sys.path[0][:sys.path[0].rindex('/')] + '/comm_manager')
 import comm_module as cm
@@ -11,6 +15,7 @@ import comm_module as cm
 
 SENSOR_TYPES = {'temp': -1,'AC': -1}
 
+app = Flask(__name__)
 
 def dummy1(topicid, handler):
     cm.consume_msg(topicid, handler)
@@ -110,3 +115,15 @@ def start():
     t3.start()
     # t2 = threading.Thread(target=dummy2, kwargs={'topicId': 'Sensor_Manager_to_Deployer', 'handler':get_sensor_id})
     # t2.start()
+
+def simulateSensors():
+    for x in server_list:
+        #app = Flask(__name__)
+        # print(json.dumps(x))
+        print(x['ip'], x['port'])
+        server_load[x['id']] = (
+            Server(x['id'], x['ip'], x['port'], x['active'], x['health'], x['applications'], x['username'], x['password']))
+        last_port = x['port']
+        producer.send(KAFKA_TOPIC_SERVER_LIST, json.dumps(x))
+
+        start_new_thread(app.run, (x['ip'], x['port']))

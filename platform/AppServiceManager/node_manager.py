@@ -133,6 +133,18 @@ def stopApplication():
     return {'msg': 'App ID not found'}, 401
 
 
+@app.route('/trigger')
+def stopApplication():
+    if request.method == 'POST':
+        return 'Not supported', 401
+    app_path = request.args.get('app_path')
+    if app_path is None:
+        return {'msg': 'App Path is absent'}, 400
+    pid = subprocess.Popen([sys.executable, app_path])
+    apps_pid.append(pid)
+    return {'msg': 'App started'}, 200
+
+
 init_servers()
 # if __name__ == '__main__':
 #     init_servers()
