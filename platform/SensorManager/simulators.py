@@ -1,5 +1,5 @@
 import random
-
+import time
 
 class ACController:
     def __init__(self, id, name=None, loc=None, status=-1, ip='0.0.0.0', port='1234'):
@@ -72,9 +72,9 @@ class LuxSensor:
         return 0 if self.controller == -1 else self.lux, self.controller
 
 
-list_of_people = list(range(150))
+list_of_people = list(range(100000))
 list_of_people_boarded = []
-
+sleep_timers = [10, 5]
 
 class BiometricSensor:
     def __init__(self,  id, desc, name=None, loc=None, ip='0.0.0.0', port='1234'):
@@ -88,8 +88,10 @@ class BiometricSensor:
         self.placeholder = desc
 
     def genRandom(self):
+        timer = random.choice(sleep_timers)
+        time.sleep(timer)
         ch = random.choice(list_of_people)
-        while ch in list_of_people_boarded:
+        while ch in list_of_people_boarded and len(list_of_people_boarded)<len(list_of_people):
             ch = random.choice(list_of_people)
         list_of_people_boarded.append(ch)
         return [self.placeholder, ch], self.controller

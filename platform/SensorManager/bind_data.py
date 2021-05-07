@@ -6,6 +6,7 @@ import sys
 sys.path.insert(0, sys.path[0][:sys.path[0].rindex('/')] + '/comm_manager')
 import comm_module as cm
 from kafka import KafkaConsumer
+from kafka import KafkaProducer
 import json
 from simulators import *
 
@@ -45,7 +46,10 @@ def simulate(sensor_obj):   # sensor_info = {'type': stype, 'ip': ip, 'port': po
         msg = {'data': data}
 
         # TODO: Uncomment next line
-        cm.send_message(topic, msg)
+        #cm.send_message(topic, msg)
+        producer = KafkaProducer(bootstrap_servers='localhost:9092',
+                             value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+        producer.send(topic, msg)
         time.sleep(1)
 
     # elif sensor_type == 'AC':

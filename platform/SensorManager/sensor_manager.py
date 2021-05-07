@@ -79,13 +79,13 @@ def get_data(topic):
     # for instance in instances:
     #     sinfo, nwinfo, topic = instance.split(':')
 
-    consumer = KafkaConsumer(topic, bootstrap_servers='localhost:9092', value_deserializer=lambda m: json.loads(m.decode('utf-8')))
+    consumer = KafkaConsumer(topic, bootstrap_servers='localhost:9092', group_id=None, auto_offset_reset='earliest', value_deserializer=lambda m: json.loads(m.decode('utf-8')))
     for message in consumer:
         data = message.value
         break
 
     print("******",data,"******")
-    return data
+    return data['data']
     # producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
     # producer.send('SM_to_Deployer_data', data)
     # producer.flush()

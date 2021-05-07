@@ -14,6 +14,10 @@ import threading
 from _thread import *
 import time
 import sys
+import shutil
+from distutils.dir_util import copy_tree
+
+
 
 sys.path.insert(0, sys.path[0][:sys.path[0].rindex('/')] + '/comm_manager')
 import comm_module as cm
@@ -42,8 +46,7 @@ if os.path.isfile("platformUserCreds.txt"):
 
 schedule_json_lst = ["start_time", "end_time","request_type",
 					 "priority", "days", "interval", "duration"]
-other_feilds_lst = ["userID", "appID", "algoID",
-					"form", "location", "placeholder","devID", "sensorList"]
+other_feilds_lst = ["userID", "appID", "algoID", "location", "placeholder","devID", "sensorList"]
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -117,7 +120,7 @@ def login():
 				# if req["dname"]=="Developer":
 				return redirect(url_for('upload', usrname=data["user_id"]))
 			elif x['type'].lower() == data['dname'].lower() and data['dname'].lower() == 'user':
-				return redirect(url_for('action', usrname=req["user_id"]))
+				return redirect(url_for('action', usrname=data["user_id"]))
 			else:
 				flash('Invalid user type')
 				return redirect(request.path) 
@@ -158,7 +161,11 @@ def dashboard(usrname):
         #    details = json.load(f.read())
 
         #if usrname in details.keys() and req["appID"] in details[usrname].keys() and req["algoID"] in details[usrname]["appID"]:
-        return render_template('monitor.html', filename=usrname+'_'+req["appID"]+'_'+req["algoID"])
+        if req['placeholder'] != '':
+        	outputfile = req['placeholder']+'_'+usrname+'_'+req["appID"]+'_'+req["algoID"]
+        else:
+        	outputfile = req['location']+'_'+usrname+'_'+req["appID"]+'_'+req["algoID"]
+        return render_template('monitor.html', filename=outputfile)
         #else:
         #    return "No such Application or Algorithm is registered"        
 
@@ -168,7 +175,7 @@ def dashboard(usrname):
 @app.route("/<filename>/monitor",methods=["GET","POST"])
 def monitor(filename):
     if request.method=="GET":
-        with open("./Data/"+filename, 'r') as f:
+        with open("../Data/"+filename, 'r') as f:
             return '<br>'.join(f.read().split('\n'))
     if request.method=="POST":
         data=request.form
@@ -233,8 +240,21 @@ def fill_form():
 	if request.method == "POST":
 		data = request.form
 		req = dict(data)
+		#print(req)
 		msg = get_dict(req)
-		print(msg)
+		msg["action"] = 'start'
+		#print(msg)
+
+		if msg['placeholder'] != '':
+			newdir = msg['placeholder']+'_'+msg['userID']+'_'+msg["appID"]+'_'+msg["algoID"]
+		else:
+			newdir = msg['location']+'_'+msg['userID']+'_'+msg["appID"]+'_'+msg["algoID"]
+
+		src = '../Applications/'+msg['devID']+'/'+msg['appID']+'/'+msg['algoID']
+		dst = '../RunningApps/'+newdir
+		if not os.path.exists(dst):
+			os.mkdir(dst)
+			copy_tree(src, dst)
 
 		cm.send_message("AS", msg)
 

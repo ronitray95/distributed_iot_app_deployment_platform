@@ -1,0 +1,8 @@
+{
+    "sensor_types": ["TEMP", "GPS","BIOMETRIC","LIGHT"], 
+    "controller_types": ["controller1", "controller4"], 
+    "notifications": ["High_heart_rate", "Abnormal_BP", "Improper_AQ"], 
+    "Algorithms": ["algo12"],
+    "sensor_info_model": ["AC1.json", "AC2.json", "BP1.json", "AQ1.json", "HR1.json", "HR2.json"],
+    "version": "v.1.1"
+}

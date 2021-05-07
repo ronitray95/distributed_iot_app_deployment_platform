@@ -143,7 +143,7 @@ def stopApplication():
 
 
 @app.route('/trigger')
-def stopApplication():
+def triggerApplication():
     if request.method == 'POST':
         return 'Not supported', 401
     app_path = request.args.get('app_path')

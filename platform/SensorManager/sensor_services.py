@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, request, jsonify
 import validate_instance
 import sensor_manager as sm
+import json
 
 
 PARENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -65,10 +66,17 @@ def getdata():
         d = sm.get_data(topic)
         data.append(d)
 
-    # payload = {"data": data}
+    payload = {"data": data}
     # return jsonify(payload)
 
-    return {"sensor", data}, 200
+    response = app.response_class(
+        response=json.dumps(payload),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+    #return {"sensor", str(data)}, 200
 
 
 @app.route("/set-data", methods=["POST"])
@@ -81,7 +89,13 @@ def setdata():
         msg = {"topic":topic, "value":controllers[topic]}
         sm.get_data(msg)
 
-    return {'status': 'Success'}, 200
+    response = app.response_class(
+        response=json.dumps({'data': 1}),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+    #return {'status': 1}
 
 
 def init_services():
