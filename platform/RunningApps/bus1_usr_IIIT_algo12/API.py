@@ -11,9 +11,13 @@ class sensorapi(object):
         self.binder()
 
     def binder(self):
-        with open("conf.json", "r") as f:
+        PARENT_DIR = os.path.dirname(os.path.abspath(__file__))
+        filepath = os.path.join(PARENT_DIR, "conf.json")
+        #print(os.path.dirname(os.path.abspath(__file__)))
+        with open(filepath, "r") as f:
             data = json.loads(f.read())
             print(data)
+            #print(os.getcwd())
             #for i in data.keys():
             self.sensor = data['sensors']
             self.userID = data['userID']
@@ -21,7 +25,7 @@ class sensorapi(object):
             self.outputfile = data['outputfile']
 
     def getData(self, sensor):
-        return obj.getData(sensor, self.sensor[sensor])
+        return obj.getData(self.sensor[sensor])
         
     def setData(self, index, sensor, value):
         return obj.setData(self.sensor[sensor][index], value)

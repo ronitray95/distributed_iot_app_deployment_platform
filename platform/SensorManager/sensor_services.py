@@ -87,7 +87,7 @@ def setdata():
     # data = []
     for topic in topic_list:
         msg = {"topic":topic, "value":controllers[topic]}
-        sm.get_data(msg)
+        sm.set_data(msg)
 
     response = app.response_class(
         response=json.dumps({'data': 1}),

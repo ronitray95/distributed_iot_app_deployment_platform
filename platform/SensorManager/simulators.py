@@ -29,16 +29,18 @@ class TempSensor:
         self.port = port
         self.controller = -1
         self.low = 15
-        self.high = 45
+        self.high = 35
         self.placeholder = desc
 
     def temp_up(self):
-        inc = round(random.uniform(0, 1))
-        self.temp += inc
+        if self.temp < self.high:
+            inc = round(random.uniform(0, 1))
+            self.temp += inc
 
     def temp_down(self):
-        dec = round(random.uniform(1, 2))
-        self.temp -= dec
+        if self.temp > self.low:
+            dec = round(random.uniform(1, 2))
+            self.temp -= dec
 
     def bind_controller(self, obj):
         self.controller = obj
@@ -74,7 +76,7 @@ class LuxSensor:
 
 list_of_people = list(range(100000))
 list_of_people_boarded = []
-sleep_timers = [10, 5]
+sleep_timers = [0, 0]
 
 class BiometricSensor:
     def __init__(self,  id, desc, name=None, loc=None, ip='0.0.0.0', port='1234'):
