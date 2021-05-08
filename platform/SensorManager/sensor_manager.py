@@ -84,13 +84,14 @@ def get_data(topic):
     #     sinfo, nwinfo, topic = instance.split(':')
     if topic.startswith("BIOMETRIC"):
         time.sleep(10)
+
     consumer = KafkaConsumer(topic, bootstrap_servers='localhost:9092', group_id=None, value_deserializer=lambda m: json.loads(m.decode('utf-8')))
     for message in consumer:
-        data = message.value
+        msg = message.value
         break
 
-    print("******",data,"******")
-    return data['data']
+    print("******",msg,"******")
+    return msg['data']
     # producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
     # producer.send('SM_to_Deployer_data', data)
     # producer.flush()
@@ -151,8 +152,18 @@ def set_data(msg):
     # msg = {"status": status}
     # bind_data.dummy_ac(status)
     # cm.send_message(topic, msg)
-    obj = sensor_objects[topic]
-    obj.controller = status
+    # obj = sensor_objects[topic]
+    # obj.controller = status
+    consumer = KafkaConsumer(topic, bootstrap_servers='localhost:9092', group_id=None, value_deserializer=lambda m: json.loads(m.decode('utf-8')))
+    for message in consumer:
+        msg = message.value
+        break
+
+    # print("******",data,"******")
+    msg['controller'] = status
+    producer = KafkaProducer(bootstrap_servers='localhost:9092',
+                             value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+    producer.send(topic, msg)
 
 
 def start():

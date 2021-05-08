@@ -24,7 +24,7 @@ class TempSensor:
         self.id = id
         self.name = name
         self.location = loc
-        self.temp = temp
+        self.data = temp
         self.ip = ip
         self.port = port
         self.controller = -1
@@ -33,26 +33,26 @@ class TempSensor:
         self.placeholder = desc
 
     def temp_up(self):
-        if self.temp < self.high:
+        if self.data < self.high:
             inc = round(random.uniform(0, 1))
-            self.temp += inc
+            self.data += inc
 
     def temp_down(self):
-        if self.temp > self.low:
+        if self.data > self.low:
             dec = round(random.uniform(1, 2))
-            self.temp -= dec
+            self.data -= dec
 
     def bind_controller(self, obj):
         self.controller = obj
 
     def genRandom(self):
-        value = self.temp
+        # value = self.data
         if self.controller == -1:
             self.temp_up()
         else:
             self.temp_down()
         # return value
-        return value, self.controller
+        return self.data, self.controller
 
 
 class LuxSensor:
@@ -66,17 +66,18 @@ class LuxSensor:
         self.low = 5
         self.high = 500
         self.controller = -1
-        self.lux = 0
+        self.data = 0
         self.placeholder = desc
 
     def genRandom(self):
-        self.lux = random.randrange(self.low, self.high)
-        return 0 if self.controller == -1 else self.lux, self.controller
+        self.data = 0 if self.controller == -1 else random.randrange(self.low, self.high)
+        return self.data, self.controller
 
 
 list_of_people = list(range(100000))
 list_of_people_boarded = []
 sleep_timers = [0, 0]
+
 
 class BiometricSensor:
     def __init__(self,  id, desc, name=None, loc=None, ip='0.0.0.0', port='1234'):
@@ -88,6 +89,11 @@ class BiometricSensor:
         self.location = loc
         self.controller = -1
         self.placeholder = desc
+        ch = random.choice(list_of_people)
+        while ch in list_of_people_boarded and len(list_of_people_boarded) < len(list_of_people):
+            ch = random.choice(list_of_people)
+        list_of_people_boarded.append(ch)
+        self.data = [self.placeholder, ch]
 
     def genRandom(self):
         timer = random.choice(sleep_timers)
@@ -96,7 +102,8 @@ class BiometricSensor:
         while ch in list_of_people_boarded and len(list_of_people_boarded)<len(list_of_people):
             ch = random.choice(list_of_people)
         list_of_people_boarded.append(ch)
-        return [self.placeholder, ch], self.controller
+        self.data = [self.placeholder, ch]
+        return self.data, self.controller
 
 
 iiit_loc = [30.44523, 40.54232]
@@ -118,6 +125,7 @@ class GPSSensor:
         self.location = loc
         self.controller = -1
         self.placeholder = desc
+        self.data = [self.placeholder, random.choice(places)]
 
     def genRandom(self):
         ch = random.choice(gps_weights)
@@ -126,5 +134,5 @@ class GPSSensor:
         # elif ch == 1:
         #     return [self.location, random.choice(barricades)]
         # else:
-        return [self.placeholder, random.choice(places)], self.controller
+        return self.data, self.controller
 

@@ -33,10 +33,12 @@ def simulate(sensor_obj):   # sensor_info = {'type': stype, 'ip': ip, 'port': po
         # temp_sensor = TempSensor(sensor_info['topic'], ip=sensor_info['ip'], port=sensor_info['port'])
     topic = sensor_obj.id
     while True:
-        # consumer = KafkaConsumer(controller_topic, bootstrap_servers='localhost:9092', value_deserializer=lambda m: json.loads(m.decode('utf-8')))
-        # for message in consumer:
-        #     data = message.value
-        #     break
+        consumer = KafkaConsumer(topic, bootstrap_servers='localhost:9092', value_deserializer=lambda m: json.loads(m.decode('utf-8')))
+        for message in consumer:
+            msg = message.value
+            break
+
+        sensor_obj.controller = msg['controller']
         data, controller = sensor_obj.genRandom()
 
         # output = sensor_obj.temp
@@ -45,7 +47,7 @@ def simulate(sensor_obj):   # sensor_info = {'type': stype, 'ip': ip, 'port': po
         #print(f"{sensor_obj.id} ---> Data:", data)
         
         # print(f"{sensor_obj.id} ---> Controller:", controller)
-        msg = {'data': data}
+        msg = {'data': data, 'controller': controller}
 
         # TODO: Uncomment next line
         #cm.send_message(topic, msg)
