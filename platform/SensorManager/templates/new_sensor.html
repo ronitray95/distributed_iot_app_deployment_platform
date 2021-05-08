@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title> Sensor Managers </title>
-        <style>
+<head>
+    <title> Sensor Managers </title>
+    <style>
         input[type=text], select {
           width: 100%;
           padding: 12px 20px;
@@ -42,57 +42,58 @@
           border-radius: 5px;
           padding: 20px;
         }
-        </style>
-    </head>
-  <body align="center">
 
-  <h3>Register New Sensor</h3>
+    </style>
+</head>
+<body align="center">
 
-  <div style = " font-size: 15px;" align="center">
+<h3>Register New Sensor</h3>
+
+<div style=" font-size: 15px;" align="center">
 
     <form action="http://localhost:5050/new-sensor" method="POST">
-      <table>
-        <tr>
-          <td>
-            <label for="stype">Sensor Type</label>
-          </td>
-          <td>
-            <input type="text" id="stype" name="type">
-          </td>
-        </tr>
-        <tr>
-          <td>
-                <label for="sid">Sensor ID</label>
-          </td>
-          <td>
-             <input type="text" id="sid" name="id">
-          </td>
-        </tr>
-        <tr>
-          <td>
-              <label for="sname">Name</label>
-          </td>
-          <td>
-            <input type="text" id="sname" name="name">
-          </td>
-        </tr>
-       <tr>
-          <td>
-              <label for="output">Output</label>
-          </td>
-          <td>
-            <input type="text" id="output" name="output">
-          </td>
-        </tr>
+        <table>
+            <tr>
+                <td>
+                    <label for="stype">Sensor Type</label>
+                </td>
+                <td>
+                    <input type="text" id="stype" name="type">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="sid">Sensor ID</label>
+                </td>
+                <td>
+                    <input type="text" id="sid" name="id">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="sname">Name</label>
+                </td>
+                <td>
+                    <input type="text" id="sname" name="name">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="output">Controller Type</label>
+                </td>
+                <td>
+                    <input type="text" id="output" name="output">
+                </td>
+            </tr>
 
-        <tr>
-          <td colspan="2">
-            <input type="submit" value="Submit">
-          </td>
-        </tr>
-      </table>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Submit">
+                </td>
+            </tr>
+        </table>
     </form>
-  </div>
+</div>
 
-  </body>
+</body>
 </html>
