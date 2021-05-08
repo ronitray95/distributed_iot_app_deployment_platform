@@ -25,9 +25,10 @@ def checkBIO():
     while count <= 15:
     
         biometric = api.getData("BIOMETRIC")["data"][0]
+        print(gps)
         fare = calculate_fare(gps[1], iiit_loc)
-        api.display(f'{time.ctime()} :: {gps[0]}:{biometric[0]} => Fare : {fare}')
-        api.sendMail(f'{time.ctime()} :: {gps[0]}:{biometric[0]} => Fare : {fare}')
+        api.display(f'{time.ctime()} :: {gps[0]}:{biometric[1]} => Fare : {fare}')
+        api.sendMail(f'{time.ctime()} :: {gps[0]}:{biometric[1]} => Fare : {fare}')
         print(fare)
         count += 1
 
@@ -35,13 +36,14 @@ gps = api.getData("GPS")["data"][0]
 t1 = threading.Thread(target=checkBIO)
 t1.start()
 
-"""
+lflag=0
+tflag=0
 while True:
     #timestamp = time.ctime()
     #{data:[[placeholderID, personID]]}
     #print(biometric)
     gps = api.getData("GPS")["data"][0] #{data:[[placeholderID, [x, y]]}
-    #print(gps)
+    print(gps[1])
     
     #print(biometric)
     #print(gps)
@@ -54,24 +56,33 @@ while True:
         #    api.sendMail(f'{time.ctime()} :: {gps[0]}:{biometric[0]} => Fare : {fare}')
         #    print(fare)
     
-        temp = api.getData("TEMP")["data"]
-        lux = api.getData("LIGHT")["data"]
+        temp = api.getData("TEMP")["data"][0]
+        lux = api.getData("LIGHT")["data"][0]
+        print('temp ',temp)
 
-        if temp > 30:
-            ack = api.setData(0, "TEMP",20)["data"]
-            if ack == 1:
-                api.display(f'{time.ctime()} :: {gps[0]}:High temperature({temp}C) detected! AC has been Turned ON')
-        if temp < 20:
-            ack = api.setData(0, "TEMP",-1)
-            if ack == 1:
-                api.display(f'{time.ctime()} :: {gps[0]}:Low temperature({temp}C) detected! AC has been Turned OFF')
-        if lux < 5:
-            ack = api.setData(0, "LIGHT",1)
-            if ack == 1:
-                api.display(f'{time.ctime()} :: {gps[0]}:Low intensity light({lux}) detected! Lights has been Turned ON')
-        if lux > 15:
-            ack = api.setData(0, "LIGHT",-1)
-            if ack == 1:
-                api.display(f'{time.ctime()} :: {gps[0]}:High intensity light({lux}) detected! Lights has been Turned OFF')
-
-"""
+        if temp < 20 or temp > 30: 
+        
+            if (not tflag) and temp > 30:
+                tflag = 1
+                ack = api.setData(0, "TEMP",1)["data"]
+                if ack == 1:
+                    api.display(f'{time.ctime()} :: {gps[0]}:High temperature({temp}C) detected! AC has been Turned ON')
+            if tflag and temp < 20:
+                tflag = 0
+                ack = api.setData(0, "TEMP",-1)["data"]
+                if ack == 1:
+                    api.display(f'{time.ctime()} :: {gps[0]}:Low temperature({temp}C) detected! AC has been Turned OFF')
+            
+        
+        if lux < 5 or lux > 15: 
+        
+            if lflag and lux < 5:
+                lflag = 0
+                ack = api.setData(0, "LIGHT",1)["data"]
+                if ack == 1:
+                    api.display(f'{time.ctime()} :: {gps[0]}:Low intensity light({lux}) detected! Lights has been Turned ON')
+            if (not lflag) and lux > 15:
+                lflag = 1
+                ack = api.setData(0, "LIGHT",-1)["data"]
+                if ack == 1:
+                    api.display(f'{time.ctime()} :: {gps[0]}:High intensity light({lux}) detected! Lights has been Turned OFF')

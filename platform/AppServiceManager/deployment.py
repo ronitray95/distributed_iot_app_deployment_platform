@@ -106,7 +106,7 @@ def run_triggeredApp(path, jID):
     print("IP/port assign to job {} is {}/{}".format(jID, ip, port))
     jobID[jID] = [ip, port]
         
-    status = requests.get("http://"+ip+':'+port+'/trigger', params={'app_path': path})
+    status = requests.get("http://"+ip+':'+str(port)+'/trigger', params={'app_path': path})
     if status:
         appName = path.split('/')[-1]
         print(f'Application:{appName} Started')
@@ -117,7 +117,7 @@ def trigger_service():
     consumer = KafkaConsumer('trig', bootstrap_servers='localhost:9092',
                              value_deserializer=lambda m: json.loads(m.decode('utf-8')))
     for mess in consumer:
-        run_triggeredApp(mess['path'], jID)   
+        run_triggeredApp(mess.value['path'], jID)   
         jID += 1
 
 def main():

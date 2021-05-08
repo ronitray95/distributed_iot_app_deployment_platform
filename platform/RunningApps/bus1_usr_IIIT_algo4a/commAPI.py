@@ -39,7 +39,7 @@ class comm(object):
         s.quit()
 
 
-    def trigger(self, path, conf):
+    def trigger(self, path):
         producer = KafkaProducer(bootstrap_servers='localhost:9092',
                              value_serializer=lambda v: json.dumps(v).encode('utf-8'))
         mess = {"path":path}

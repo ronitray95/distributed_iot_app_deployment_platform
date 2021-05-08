@@ -19,7 +19,7 @@ class ACController:
 
 
 class TempSensor:
-    def __init__(self, id, desc, name=None, loc=None, temp=20, ip='0.0.0.0', port='1234'):
+    def __init__(self, id, desc, name=None, loc=None, temp=31, ip='0.0.0.0', port='1234'):
         self.type = 'TEMP'
         self.id = id
         self.name = name
@@ -47,13 +47,15 @@ class TempSensor:
 
     def genRandom(self):
         # value = self.data
-        if self.controller == -1:
+        """if self.controller == -1:
             self.temp_up()
         else:
             self.temp_down()
         # return value
         return self.data, self.controller
-
+        """
+        self.data = random.randrange(self.low, self.high)
+        return self.data, self.controller
 
 class LuxSensor:
     def __init__(self, id, desc, name=None, loc=None, ip='0.0.0.0', port='1234'):
@@ -63,14 +65,14 @@ class LuxSensor:
         self.ip = ip
         self.port = port
         self.location = loc
-        self.low = 5
-        self.high = 500
+        self.low = 0
+        self.high = 20
         self.controller = -1
         self.data = 0
         self.placeholder = desc
 
     def genRandom(self):
-        self.data = 0 if self.controller == -1 else random.randrange(self.low, self.high)
+        self.data = random.randrange(self.low, self.high) if self.controller == -1 else 20
         return self.data, self.controller
 
 
@@ -112,7 +114,7 @@ barricades = [[20.34535, 41.34234], [18.42342, 35.45453], [
 places = [[12.34535, 23.34234], [15.42342, 17.45453], [19.42342, 43.45453], [
     27.321, 60.314], [10.4346, 46.332], [33.4346, 32.332], [10.2, 19.332], [23.12, 49.55]]
 
-gps_weights = [0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+gps_weights = [0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
 
 
 class GPSSensor:
@@ -129,10 +131,12 @@ class GPSSensor:
 
     def genRandom(self):
         ch = random.choice(gps_weights)
-        # if ch == 0:
-        #     return [self.location, iiit_loc]
-        # elif ch == 1:
-        #     return [self.location, random.choice(barricades)]
-        # else:
+        if ch == 0:
+            self.data = [self.placeholder, iiit_loc]        
+        elif ch == 1:
+            self.data = [self.placeholder, random.choice(barricades)]
+        else:
+            self.data = [self.placeholder, random.choice(places)]
+
         return self.data, self.controller
 

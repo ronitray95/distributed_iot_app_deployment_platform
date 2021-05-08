@@ -19,7 +19,7 @@ registered_sensors = []
 INIT_STATE = False
 
 
-@app.route('/')
+#@app.route('/')
 def init_sensors():
 	global INIT_STATE
 	if INIT_STATE:
@@ -41,7 +41,7 @@ def init_sensors():
 	return 'Success', 200
 
 
-@app.route('/get-data')
+@app.route('/get-data', methods=["GET", "POST"])
 def fetchSensorData():
 	if not INIT_STATE:
 		init_sensors()
@@ -49,6 +49,7 @@ def fetchSensorData():
 	# 	return 'Not supported', 401
 	#x = request.args.get('sensor')
 	x = request.get_json()
+	print(x)
 	x = x['sensor']
 	if x is None:
 		return 'Sensor ID is absent', 400
@@ -63,7 +64,7 @@ def fetchSensorData():
 			return 'Invalid sensor ID', 400
 
 		s = socket.socket()
-		s.connect((sensorObj.ip, sensorObj.port))
+		s.connect((sensorObj.ip, int(sensorObj.port)))
 		s.send('RECV'.encode('utf-8'))
 		d = s.recv(100)
 		d = d.decode('utf-8')
@@ -79,7 +80,7 @@ def fetchSensorData():
 	# return {'data': data}, 200
 
 
-@app.route('/set-data')
+@app.route('/set-data', methods=["GET", "POST"])
 def modifySensorData():
 	if not INIT_STATE:
 		init_sensors()
@@ -101,7 +102,7 @@ def modifySensorData():
 		return 'Invalid sensor ID', 400
 	l = int(d[key])
 	s = socket.socket()
-	s.connect((sensorObj.ip, sensorObj.port))
+	s.connect((sensorObj.ip, int(sensorObj.port)))
 	s.send(f'MOD {l}'.encode('utf-8'))
 	data = s.recv(100)
 	data = data.decode('utf-8')

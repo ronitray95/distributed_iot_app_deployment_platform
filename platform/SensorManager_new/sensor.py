@@ -67,7 +67,7 @@ class TemperatureSensor:
     def start(self):
         print(
             f'Started sensor {self.name} with ID {self.id} at {self.ip}:{self.port}')
-        #input('Press ENTER to quit simuation\n')
+        input()
 
     def stop(self):
         self.listenSocket.close()
@@ -128,7 +128,7 @@ class LuxSensor:
     def start(self):
         print(
             f'Started sensor {self.name} with ID {self.id} at {self.ip}:{self.port}')
-        #input('Press ENTER to quit simuation\n')
+        input()
 
     def stop(self):
         self.listenSocket.close()
@@ -196,7 +196,7 @@ class BiometricSensor:
     def start(self):
         print(
             f'Started sensor {self.name} with ID {self.id} at {self.ip}:{self.port}')
-        #input('Press ENTER to quit simuation\n')
+        input()
 
     def stop(self):
         self.listenSocket.close()
@@ -274,7 +274,7 @@ class GPSSensor:
     def start(self):
         print(
             f'Started sensor {self.name} with ID {self.id} at {self.ip}:{self.port}')
-        #input('Press ENTER to quit simuation\n')
+        input()
 
     def stop(self):
         self.listenSocket.close()

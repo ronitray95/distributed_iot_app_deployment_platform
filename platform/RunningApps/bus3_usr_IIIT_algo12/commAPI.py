@@ -5,8 +5,7 @@ from kafka import KafkaProducer
 import json
 import pymongo as pm
 from pymongo import *
-import smtplib
-from email.message import EmailMessage
+
  
 class comm(object): 
     def __init__(self):
@@ -30,13 +29,8 @@ class comm(object):
         return x['email']
 
     def sendMail(self, emailID, msg):
+        pass
         #add code for sending mail on 'emailID'
-        s = smtplib.SMTP('smtp.gmail.com', 587)
-        s.starttls() 
-        s.login('ias.platform5@gmail.com','iasplat1@5') 
-        s.sendmail('ias.platform5@gmail.com', "patidar11.pp@gmail.com", msg)
-        # s.send_message(msg)
-        s.quit()
 
 
     def trigger(self, path, conf):

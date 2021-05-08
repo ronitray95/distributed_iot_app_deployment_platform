@@ -9,6 +9,8 @@ import sys
 from simulators import *
 import csv
 
+
+
 # TODO: Uncomment next line
 sys.path.insert(0, sys.path[0][:sys.path[0].rindex('/')] + '/comm_manager')
 import comm_module as cm
@@ -76,7 +78,7 @@ def bind_sensor(sensor_info):
 
 def get_data(topic):
     # sensor_topic = msg['msg']
-    print(topic)
+    #print(topic)
     # with open("sensor_registry.txt", 'r') as f:
     #     instances = f.readlines()
 
@@ -90,7 +92,7 @@ def get_data(topic):
         msg = message.value
         break
 
-    print("******",msg,"******")
+    #print("******",msg,"******")
     return msg['data']
     # producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
     # producer.send('SM_to_Deployer_data', data)
@@ -145,10 +147,11 @@ def run_sensors():
 def set_data(msg):
     global sensor_objects
 
-    print(sensor_objects)
+    #print(sensor_objects)
 
     topic = msg['topic']
     status = msg['value']
+    print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$44",topic,status)
     # msg = {"status": status}
     # bind_data.dummy_ac(status)
     # cm.send_message(topic, msg)
@@ -160,7 +163,9 @@ def set_data(msg):
         break
 
     # print("******",data,"******")
+    print("$$$$$$$$$$$$$$$$$$$",msg)
     msg['controller'] = status
+    print("$$$$$$$$$$$",msg)
     producer = KafkaProducer(bootstrap_servers='localhost:9092',
                              value_serializer=lambda v: json.dumps(v).encode('utf-8'))
     producer.send(topic, msg)
