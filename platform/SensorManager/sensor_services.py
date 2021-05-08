@@ -10,7 +10,7 @@ import json
 PARENT_DIR = os.path.dirname(os.path.abspath(__file__))
 registry_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sensor_registry.txt")
 repository_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sensor_repository.json")
-app = Flask("sensor-interface", template_folder=os.path.join(PARENT_DIR, 'templates'))
+app = Flask("Sensor Services", template_folder=os.path.join(PARENT_DIR, 'templates'))
 
 
 @app.route("/new-sensor", methods=["GET", "POST"])

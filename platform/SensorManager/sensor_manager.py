@@ -132,3 +132,4 @@ def start():
     #   Create a kafka topic to start sensor manager services
     t1 = threading.Thread(target=run_sensors)
     t1.start()
+    print("**************** Sensor Manager ******************")
