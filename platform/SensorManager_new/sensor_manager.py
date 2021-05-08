@@ -41,13 +41,15 @@ def init_sensors():
 	return 'Success', 200
 
 
-@app.route('/fetch')
+@app.route('/get-data')
 def fetchSensorData():
 	if not INIT_STATE:
 		init_sensors()
-	if request.method == 'POST':
-		return 'Not supported', 401
-	x = request.args.get('sensor')
+	# if request.method == 'POST':
+	# 	return 'Not supported', 401
+	#x = request.args.get('sensor')
+	x = request.get_json()
+	x = x['sensor']
 	if x is None:
 		return 'Sensor ID is absent', 400
 	data=[]
@@ -67,16 +69,25 @@ def fetchSensorData():
 		d = d.decode('utf-8')
 		data.append(d)
 		s.close()
-	return {'sensor': data}, 200
+
+	response = app.response_class(
+		response=json.dumps({'data': data}),
+		status=200,
+		mimetype='application/json'
+	)
+	return response,200
+	# return {'data': data}, 200
 
 
-@app.route('/modify')
+@app.route('/set-data')
 def modifySensorData():
 	if not INIT_STATE:
 		init_sensors()
-	if request.method == 'POST':
-		return 'Not supported', 401
-	x = request.args.get('controller')
+	# if request.method == 'POST':
+	# 	return 'Not supported', 401
+	# x = request.args.get('controller')
+	x = request.get_json()
+	x = x['controller']
 	if x is None:
 		return 'Controller ID is absent', 400
 	d = dict(x)
@@ -100,4 +111,4 @@ def modifySensorData():
 
 
 if __name__ == '__main__':
-	app.run(debug=True,port=9000)
+	app.run(debug=True,port=5050)

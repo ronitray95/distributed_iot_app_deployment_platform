@@ -41,6 +41,7 @@ class TemperatureSensor:
             self.temp = self.low
         if self.temp > self.high:
             self.temp = self.high
+        print('For',self.id,'generated temperature',value)
         return value
 
     def startListen(self):
@@ -100,7 +101,9 @@ class LuxSensor:
         #id = random.randint(l, h)
         time.sleep(self.delay)
         value = random.randrange(self.low, self.high)
-        return 0 if self.isOn == 0 else value
+        value = 0 if self.isOn == 0 else value
+        print('For',self.id,'generated lux',value)
+        return value
 
     def startListen(self):
         while True:
@@ -163,6 +166,7 @@ class BiometricSensor:
         while ch in list_of_people_boarded:
             ch = random.choice(list_of_people)
         list_of_people_boarded.append(ch)
+        print('For',self.id,'and',self.location,'generated biometric',ch)
         return [self.location, ch]
         # value = random.randrange(self.low, self.high)
         # return value
@@ -237,7 +241,9 @@ class GPSSensor:
         # elif ch == 1:
         #     return [self.location, random.choice(barricades)]
         # else:
-        return [self.location, random.choice(places)]
+        val = random.choice(places)
+        print('For',self.id,'and',self.location,'generated GPS coordinates',val)
+        return [self.location, val]
         # value = random.randrange(self.low, self.high)
         # return value
 
