@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-gnome-terminal -x ./sensor_services.py
+cd $1
+./sensor_services.py

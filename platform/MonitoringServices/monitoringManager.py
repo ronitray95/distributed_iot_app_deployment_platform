@@ -24,6 +24,7 @@ def startMonitor():
     elif sys.platform.startswith('win32'):
         osType = 2
     i = 0
+    flag = [1,1,1,1,1,1,1]
     while True:
         result = subprocess.run(
             ['pgrep', '-f', '.*python.*'+components[i]+'.py'], stdout=subprocess.PIPE)
@@ -38,14 +39,16 @@ def startMonitor():
             continue
 
         if len(x) != 0:  # len(my_pid.splitlines()) > 0:
-            print('Service', components[i].upper(), 'running normally')
+            if flag[i]:
+                print('Service', components[i].upper(), 'running normally')
+                flag[i]=0
         else:
             print('ERROR! Service', components[i].upper(
             ), 'is not running. Attempting to resume...')
             # https://stackoverflow.com/questions/19308415/execute-terminal-command-from-python-in-new-terminal-window
             if osType == 0:
                 subprocess.call(
-                    ['gnome-terminal', '-x', '.' + basePath + folder_names[i] + bash_restart_files[i]])
+                    ['gnome-terminal', '--window', '--', basePath + folder_names[i] + bash_restart_files[i], basePath + folder_names[i]])
             elif osType == 1:
                 subprocess.call(
                     ['open', '-W', '-a', 'Terminal.app', 'bash', '--args', bash_restart_files[i]])
@@ -54,10 +57,12 @@ def startMonitor():
                                 bash_restart_files[i], shell=True)
             else:
                 print('Unknown OS. Failed to restart service')
+
+            flag[i]=1
         i += 1
         if i >= len(components):
             i = 0
-        time.sleep(10)
+        #time.sleep(2)
 
 
 if __name__ == '__main__':

@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-
-gnome-terminal -x ./logger.py
+cd $1
+./logger.py

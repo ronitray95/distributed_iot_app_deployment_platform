@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-
-gnome-terminal -x ./scheduler.py
+cd $1
+./scheduler.py

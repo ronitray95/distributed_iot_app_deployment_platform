@@ -9,10 +9,8 @@ import random
 from datetime import datetime, timedelta
 from datetime import date
 import calendar
-import sys
-
-sys.path.insert(0, sys.path[0][:sys.path[0].rindex('/')] + '/comm_manager')
 import comm_module as cm
+
 
 week_dict = {0:"Monday",1:'Tuesday',2:'Wednesday',3:'Thursday',4:'Friday',5:'Saturday',6:'Sunday'}
 
@@ -29,7 +27,7 @@ class Scheduler:
 
     def job_done(self, arg):
         uname,app_id,end_time,uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd= arg[0],arg[1],arg[2],arg[3],arg[4],arg[5],arg[6],arg[7],arg[8],arg[9],arg[10],arg[11]
-        print("injobdone")
+        # print("injobdone")
         msg = {
                 "action":"stop",
                     "jID": str(to_snd),
@@ -44,13 +42,13 @@ class Scheduler:
                     "CPU":str(CPU)
                     }
         cm.send_message("DP",msg)
-        print(self.uid_job_dict[uid_job])
+        # print(self.uid_job_dict[uid_job])
         schedule.cancel_job(self.uid_job_dict[uid_job])
-        print("job_done")
+        print(".....Execution Completed Successfully.....")
 
     def job_done_interval(self, arg):
         uname,app_id,end_time,uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd= arg[0],arg[1],arg[2],arg[3],arg[4],arg[5],arg[6],arg[7],arg[8],arg[9],arg[10],arg[11]
-        print("injobdone")
+
         msg = {
                 "action":"stop",
                     "jID": str(to_snd),
@@ -64,15 +62,12 @@ class Scheduler:
                     "RAM":str(RAM),
                     "CPU":str(CPU)
                     }
-        cm.send_message("DP",msg)
-        print(self.uid_job_dict[uid_job])
-        # schedule.cancel_job(self.uid_job_dict[uid_job])
-        print("job_done")
+
         
 
     def schedule_on_days_interval(self,arg):
         uname,app_id,end_time,uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd= arg[0],arg[1],arg[2],arg[3],arg[4],arg[5],arg[6],arg[7],arg[8],arg[9],arg[10],arg[11]
-        print("in_schedule_on_days")
+        # print("in_schedule_on_days")
         msg = {
             "action":"start",
                 "jID": str(to_snd),
@@ -87,8 +82,8 @@ class Scheduler:
                 "CPU":str(CPU)
                 }
 
-        #cm.send_message("DP",msg)
-        #print("message_sent")
+        cm.send_message("DP",msg)
+        print(".....Interval Job Scheduled for subsequent intervals....")
         
         job_id = schedule.every().day.at(end_time).do(self.job_done_interval,((uname,app_id,end_time,uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd))) 
         #print(job_id)
@@ -96,7 +91,7 @@ class Scheduler:
 
     def schedule_on_days(self,arg):
         uname,app_id,end_time,uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd= arg[0],arg[1],arg[2],arg[3],arg[4],arg[5],arg[6],arg[7],arg[8],arg[9],arg[10],arg[11]
-        print("in_schedule_on_days")
+        # print("in_schedule_on_days")
         msg = {
             "action":"start",
                 "jID": str(to_snd),
@@ -112,7 +107,8 @@ class Scheduler:
                 }
 
         cm.send_message("DP",msg)
-        #print("message_sent")
+        print("Job Execution started with job_id : {}".format(uid_job))
+        # print(uid_job)
         
         job_id = schedule.every().day.at(end_time).do(self.job_done,((uname,app_id,end_time,uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd))) 
         #print(job_id)
@@ -129,7 +125,7 @@ class Scheduler:
        
     def schedule_interval(self,arg):
         uname,app_id,end_time,uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd= arg[0],arg[1],arg[2],arg[3],arg[4],arg[5],arg[6],arg[7],arg[8],arg[9],arg[10],arg[11]
-        print("inscheduleinterval")
+        # print("inscheduleinterval")
         msg = {
             "action":"start",
                 "jID": str(to_snd),
@@ -155,13 +151,7 @@ class Scheduler:
 
         #print(end_time)
         job_id = schedule.every().day.at(end_time).do(self.job_done_interval,((uname,app_id,end_time,uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd))) 
-        # try:
-        #     if(self.uid_job_dict[uid_job]):
-        #         #print("we are in end interval")
-        #         # schedule.cancel_job(self.uid_job_dict[uid_job])
-        # except:
-        #     pass
-        # self.uid_job_dict[uid_job]=job_id
+
         
     def schedule_immediate(self,uname,app_id,end_time,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd):
         
@@ -211,7 +201,8 @@ class Scheduler:
                 "jID": str(stop_id),
                 }
             cm.send_message("DP",msg)
-            print(self.uid_job_dict[stop_id])
+            print("....Job Terminated....")
+            # print(self.uid_job_dict[stop_id])
             schedule.cancel_job(self.uid_job_dict[stop_id])
 
         else:
@@ -238,11 +229,6 @@ class Scheduler:
             else:
                 to_snd = location+"_"+uname+"_"+app_id+"_"+algoID
 
-            
-        
-
-
-
 
             request_type=scDc["request_type"]
             job_id = None
@@ -254,7 +240,7 @@ class Scheduler:
             # self.uid_job = placeholder+";"+uname+";"+app_id+";"+algoID
             if request_type=="immediate":
                 # self.uid_job += ";i"
-
+                print("......Immediate Job execution Started........")
                 now = datetime.now()
                 cur_time = now + \
                     timedelta(seconds=1)
@@ -283,17 +269,14 @@ class Scheduler:
                     # self.uid_job += ";sat"
                     job_id = schedule.every().saturday.at(cur_time).do( self.schedule_on_days,((uname,app_id,end_time,self.uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd)))
                 elif(d.lower()=="sunday"):
-                    #print("helloooo")
-                    # self.uid_job += ";sun"
                     job_id = schedule.every().sunday.at(cur_time).do( self.schedule_on_days,((uname,app_id,end_time,self.uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd)))
                 
 
-                # job_id = self.schedule_immediate(uname,app_id,end_time,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd)
                 
                 self.uid_job_dict[self.uid_job] = job_id
             else: # cron job
                 if interval != "None":
-
+                    print("......Interval Job execution started with {} minutes........".format(interval))
                     end_time = int(duration)
                     now = datetime.now()
                     #print("interval",now)
@@ -309,22 +292,18 @@ class Scheduler:
                     
                     end_time = int(duration)
                     #print(end_time)
-                    # job_id = schedule.every().day.at(end_time).do(self.job_done_interval,((uname,app_id,end_time,uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd))) 
-                           
-
 
 
 
                     # self.uid_job += ";n"
                     # end_time = int(duration)
                     job_id = schedule.every(int(interval)).minutes.do(self.schedule_interval,((uname,app_id,end_time,self.uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd)))
-                    # self.uid_job += ";n"+str(random.randint(0,10000))
                     self.uid_job_dict[self.uid_job] = job_id
                     #print("jobid",job_id)
                 else:
                     if dayLst == 'everyday':
-                        # self.uid_job += ";e"
-                        #print("hi")
+                        print("......Job execution Scheduled for everyday at {}........".format(start_time))
+
                         alllst = week_dict.values()
                         #print(alllst)
                         for d in alllst:
@@ -348,15 +327,15 @@ class Scheduler:
                                 job_id = schedule.every().saturday.at(start_time).do( self.schedule_on_days,((uname,app_id,end_time,self.uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd)))
                                 
                             elif(d.lower()=="sunday"):
-                                # self.uid_job += ";sun"
-                                #print(start_time)
-                                #print(uname,app_id,end_time,self.uid_job)
+
                                 job_id = schedule.every().sunday.at(start_time).do( self.schedule_on_days,((uname,app_id,end_time,self.uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd)))
                             
                             self.uid_job_dict[self.uid_job] = job_id
 
                     else:
                         d = dayLst
+                        print("......Job execution Scheduled for {} at {}........".format(d,start_time))
+                     
                         # self.uid_job += ";dd"
                         if(d=="monday"):
                             # self.uid_job += ";mon"
@@ -385,15 +364,9 @@ class Scheduler:
                         
                         self.uid_job_dict[self.uid_job] = job_id
 
-            # t1 = threading.Thread(target=schObj.schedule_pending()) 
-            # t1.start()
-            # schObj.schedule_pending()
             schObj.run_thread()
 
-          
-# with open('user_config.json') as jf:
-#     dataDc= json.load(jf)
-##print(dataDc)
+
 
 if __name__=="__main__":
 

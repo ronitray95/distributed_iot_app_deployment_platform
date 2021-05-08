@@ -4,27 +4,35 @@
 # trap "kill 0" EXIT
 
 #Initiating Kafka server
-gnome-terminal -x ./kafka/bin/zookeeper-server-start.sh ~/kafka/config/zookeeper.properties
-sleep 2
-gnome-terminal -x ./kafka/bin/kafka-server-start.sh ~/kafka/config/server.properties
 
+#cd ~/kafka/bin/
+#gnome-terminal --window -- ./zookeeper-server-start.sh ~/kafka/config/zookeeper.properties
+#sleep 5
+#gnome-terminal --window -- ./kafka-server-start.sh ~/kafka/config/server.properties
+#sleep 7
+
+#cd -
 cd platform/AppManager
-gnome-terminal -x ./appManager.py
+pwd
+gnome-terminal --window -- ./appManager.py
 cd ..
 
 cd AppServiceManager
-gnome-terminal -x ./node_manager.py
-gnome-terminal -x ./appService.py
-gnome-terminal -x ./logger.py
+pwd
+gnome-terminal --window -- ./node_manager.py
+gnome-terminal --window -- ./appService.py
+gnome-terminal --window -- ./logger.py
 cd ..
 
 cd scheduler
-gnome-terminal -x ./scheduler.py
+pwd
+gnome-terminal --window -- ./scheduler.py
 cd ..
 
 cd SensorManager
-gnome-terminal -x ./sensor_services.py
-gnome-terminal -x ./init.py
+pwd
+gnome-terminal --window -- ./sensor_services.py
+gnome-terminal --window -- ./init.py
 
 
 #Registering Kafka topics

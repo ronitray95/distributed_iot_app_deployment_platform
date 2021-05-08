@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-
-gnome-terminal -x ./appManager.py
+cd $1
+./appManager.py

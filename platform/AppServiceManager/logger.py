@@ -25,6 +25,8 @@ for message in consumer:
         type = 'ERROR'
     else:
         type = 'UNKNOWN'
+    with open('../Logs/'+sender) as f:
+        f.write(f'[{type}] : {sender} says {msg}\n')
     print(f'[{type}] : {sender} says {msg}')
 
 

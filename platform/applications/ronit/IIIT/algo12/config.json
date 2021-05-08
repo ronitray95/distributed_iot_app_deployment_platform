@@ -1,7 +1,7 @@
 {
     "files" : ["algo12.py", "API.py", "commAPI.py"],
     "sensor_types" : ["TEMP","GPS","BIOMETRIC","LIGHT"],
-    "controller_types": ["controller1", "controller2"],
+    "controller_types": ["AC_C", "LIGHT_C"],
      "RAM":"200MB",
-     "CPU": "hsad"
+     "CPU": "1.2Hz"
 }
