@@ -40,6 +40,5 @@ class sensorapi(object):
     def getEmailID(self):
         return self.emailID
 
-    def trigger(self, algo):
-        path = os.path.abspath(algo)
+    def trigger(self, path):
         obj.trigger(path)

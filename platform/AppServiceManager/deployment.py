@@ -7,6 +7,7 @@ import threading
 import os
 import sys 
 import pandas as pd
+import shutil
 
 sys.path.insert(0, sys.path[0][:sys.path[0].rindex('/')] + '/comm_manager')
 import comm_module as cm
@@ -36,61 +37,69 @@ def createConfig(conf, path):
         f.write(json.dumps(conf))
 
 
-def appExe(action, jID, algoID, appID, userID, devID, RAM, CPU, dirpath):
+def appExe(jID, algoID, appID, userID, devID, RAM, CPU, dirpath):
+    
     global jobID
     ip, port = sl.running_runtime()
-    if action == 'start':
-        #ip ="127.0.0.1"
-        #port = "5010"
-        print("IP/port assign to job {} is {}/{}".format(jID, ip, port))
-        jobID[jID] = [ip, port]
-        status = requests.get("http://"+ip+':'+str(port)+'/runapp', params={'jID':jID, 'app_path':dirpath+"/"+algoID+".py"})
-        if status:
-            print("Application:{} Started".format(appID))
+    #ip ="127.0.0.1"
+    #port = "5010"
+    print("IP/port assign to job {} is {}/{}".format(jID, ip, port))
+    jobID[jID] = [ip, port]
+    status = requests.get("http://"+ip+':'+str(port)+'/runapp', params={'jID':jID, 'app_path':dirpath+"/"+algoID+".py"})
+    if status:
+        print("Application:{} Started".format(appID))
 
-    else:
-        status = requests.get("http://"+jobID[jID][0]+':'+jobID[jID]
-                              [1]+'/stopapp', params={'jID':jID})
-        if status:
-            os.rmdir('../RunningApps/'+jobID)
-            del jobID[jID]
-            print("Application:{} terminated".format(appID))
+def appStop(jID):
+
+    global jobID
+    
+    print("jobid*******************",jobID[jID][0],jobID[jID][1])
+
+    status = requests.get("http://"+jobID[jID][0]+':'+str(jobID[jID][1])+'/stopapp', params={'jID':jID})
+    if status:
+        shutil.rmtree('../RunningApps/'+jID)
+        #os.rmdir('../RunningApps/'+jID)
+        del jobID[jID]
+        print("Application:{} terminated".format(jID.split('_')[-1]))
 
 
 def handler_fun(message):
 
-    print(message)
+    #print(message)
+    if message['action'] == 'start':
+        action = message["action"]  # start/stop
+        jID = message["jID"]
+        appID = message["appID"]
+        algoID = message["algoID"]
+        types = message['sensorList'] #[type1,type2...]
+        #idby = message["idby"] #value: [loc/placeholder, name]
+        #sensorList = message["sensorList"]  # ["temp_t123","ac_a123"]
+        userID = message["userID"]
+        devID = message["devID"]
+        RAM = message["RAM"]
+        CPU = message["CPU"]
+        location = message["location"]
+        placeholder = message["placeholder"]
+        path = '../RunningApps/'
 
-    action = message["action"]  # start/stop
-    jID = message["jID"]
-    appID = message["appID"]
-    algoID = message["algoID"]
-    types = message['sensorList'] #[type1,type2...]
-    #idby = message["idby"] #value: [loc/placeholder, name]
-    #sensorList = message["sensorList"]  # ["temp_t123","ac_a123"]
-    userID = message["userID"]
-    devID = message["devID"]
-    RAM = message["RAM"]
-    CPU = message["CPU"]
-    location = message["location"]
-    placeholder = message["placeholder"]
-    path = '../RunningApps/'
+        if placeholder != '':
+            idby = ['placeholder', placeholder]
+        else:
+            idby = ['location', location]
 
-    if placeholder != '':
-        idby = ['placeholder', placeholder]
+        sensorList = createList(idby, types)
+        if message['placeholder'] != '':
+            outputfile = message['placeholder']+'_'+userID+'_'+appID+'_'+algoID
+        else:
+            outputfile = message['location']+'_'+userID+'_'+appID+'_'+algoID
+
+        conf = {'sensors':sensorList,'userID':userID,'outputfile':'../Data/'+outputfile}
+        dirpath = path+outputfile
+        createConfig(conf, dirpath)
+        appExe(jID, algoID, appID, userID, devID, RAM, CPU, dirpath)
+    
     else:
-        idby = ['location', location]
-
-    sensorList = createList(idby, types)
-    if message['placeholder'] != '':
-        outputfile = message['placeholder']+'_'+userID+'_'+appID+'_'+algoID
-    else:
-        outputfile = message['location']+'_'+userID+'_'+appID+'_'+algoID
-
-    conf = {'sensors':sensorList,'userID':userID,'outputfile':'../Data/'+outputfile}
-    dirpath = path+outputfile
-    createConfig(conf, dirpath)
-    appExe(action, jID, algoID, appID, userID, devID, RAM, CPU, dirpath)
+        appStop(message['jID'])
 
 
 def schedular_service():

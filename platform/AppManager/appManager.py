@@ -179,11 +179,16 @@ def monitor(filename):
             return '<br>'.join(f.read().split('\n'))
     if request.method=="POST":
         data=request.form
-        req = dict[data]
-        if req["act"] == "back":
+        req = dict(data)
+        print(req)
+        if req["action"] == "back":
             pass
-        if req["act"] == "stop":
-            pass
+        if req["action"] == "stop":
+        	msg={}
+        	msg['jid']=filename.split('/')[-1]
+        	msg['action']='stop'
+        	cm.send_message("AS", msg)
+
     return render_template("monitor.html",filename=filename)
 
 

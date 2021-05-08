@@ -34,12 +34,13 @@ class comm(object):
         s = smtplib.SMTP('smtp.gmail.com', 587)
         s.starttls() 
         s.login('ias.platform5@gmail.com','iasplat1@5') 
-        s.sendmail('ias.platform5@gmail.com', "patidar11.pp@gmail.com", msg)
+        message = 'Subject: {}\n\n{}'.format("IAS Notification", msg)
+        s.sendmail('ias.platform5@gmail.com', 'patidar11.pp@gmail.com', message)
         # s.send_message(msg)
         s.quit()
 
 
-    def trigger(self, path, conf):
+    def trigger(self, path):
         producer = KafkaProducer(bootstrap_servers='localhost:9092',
                              value_serializer=lambda v: json.dumps(v).encode('utf-8'))
         mess = {"path":path}
