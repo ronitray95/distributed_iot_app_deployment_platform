@@ -1,0 +1,1 @@
+{"sensors": {"TEMP": ["TEMP_0"], "GPS": ["GPS_0"], "LIGHT": ["LIGHT_0"], "BIOMETRIC": ["BIOMETRIC_0"]}, "userID": "usr", "outputfile": "../Data/bus1_usr_IIIT_algo12"}

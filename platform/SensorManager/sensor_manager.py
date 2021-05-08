@@ -37,8 +37,12 @@ Binds the sensor data to a topic
 
 
 def bind_sensor(sensor_info):
+    global sensor_objects
+    
     sensor_type = sensor_info['type']
     print("Type")
+    #print(sensor_objects)
+
     if sensor_type == 'TEMP':
         topic = sensor_info['topic']
         obj = TempSensor(topic, sensor_info['desc'], ip=sensor_info['ip'], loc=sensor_info['loc'], port=sensor_info['port'])
@@ -78,8 +82,9 @@ def get_data(topic):
 
     # for instance in instances:
     #     sinfo, nwinfo, topic = instance.split(':')
-
-    consumer = KafkaConsumer(topic, bootstrap_servers='localhost:9092', group_id=None, auto_offset_reset='earliest', value_deserializer=lambda m: json.loads(m.decode('utf-8')))
+    if topic.startswith("BIOMETRIC"):
+        time.sleep(10)
+    consumer = KafkaConsumer(topic, bootstrap_servers='localhost:9092', group_id=None, value_deserializer=lambda m: json.loads(m.decode('utf-8')))
     for message in consumer:
         data = message.value
         break
@@ -137,6 +142,9 @@ def run_sensors():
 
 
 def set_data(msg):
+    global sensor_objects
+
+    print(sensor_objects)
 
     topic = msg['topic']
     status = msg['value']

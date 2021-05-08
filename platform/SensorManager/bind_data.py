@@ -41,7 +41,9 @@ def simulate(sensor_obj):   # sensor_info = {'type': stype, 'ip': ip, 'port': po
 
         # output = sensor_obj.temp
         # controller = sensor_obj.controller
-        print(f"{sensor_obj.id} ---> Data:", data)
+        
+        #print(f"{sensor_obj.id} ---> Data:", data)
+        
         # print(f"{sensor_obj.id} ---> Controller:", controller)
         msg = {'data': data}
 
