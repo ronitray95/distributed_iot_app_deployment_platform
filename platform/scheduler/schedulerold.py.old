@@ -5,13 +5,12 @@ import json
 from kafka import KafkaConsumer, KafkaProducer
 import random
 from datetime import datetime, timedelta
-from datetime import date
-import calendar
 #import comm_module as cm
 import sys
 
 sys.path.insert(0, sys.path[0][:sys.path[0].rindex('/')] + '/comm_manager')
 import comm_module as cm
+
 
 week_dict = {0:"Monday",1:'Tuesday',2:'Wednesday',3:'Thursday',4:'Friday',5:'Saturday',6:'Sunday'}
 
@@ -67,30 +66,7 @@ class Scheduler:
         print(self.uid_job_dict[uid_job])
         # schedule.cancel_job(self.uid_job_dict[uid_job])
         print("job_done")
-        
-
-    def schedule_on_days_interval(self,arg):
-        uname,app_id,end_time,uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd= arg[0],arg[1],arg[2],arg[3],arg[4],arg[5],arg[6],arg[7],arg[8],arg[9],arg[10],arg[11]
-        print("in_schedule_on_days")
-        msg = {
-            "action":"start",
-                "jID": str(to_snd),
-                "placeholder":str(placeholder),
-                "location":str(location),
-                "appID":str(app_id),
-                "algoID":str(algoID),
-                "sensorList":sensorList,
-                "userID":str(uname),
-                "devID":str(devID),
-                "RAM":str(RAM),
-                "CPU":str(CPU)
-                }
-
-        #cm.send_message("DP",msg)
-        #print("message_sent")
-        
-        job_id = schedule.every().day.at(end_time).do(self.job_done_interval,((uname,app_id,end_time,uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd))) 
-        #print(job_id)
+    
 
 
     def schedule_on_days(self,arg):
@@ -162,43 +138,9 @@ class Scheduler:
         #     pass
         # self.uid_job_dict[uid_job]=job_id
         
-    def schedule_immediate(self,uname,app_id,end_time,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd):
-        
-        now = datetime.now()
-        cur_time = now + \
-            timedelta(seconds=1)
-
-        cur_time = cur_time.strftime("%H:%M:%S")
-        d = week_dict[datetime.today().weekday()]
-        
-        #print(d)
-        #print((cur_time))
-        if(d.lower()=="monday"):
-            # self.uid_job += ";mon"
-            job_id = schedule.every().monday.at(cur_time).do( self.schedule_on_days_interval,((uname,app_id,end_time,self.uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd)))
-        elif(d.lower()=="tuesday"):
-            # self.uid_job += ";tue"
-            job_id = schedule.every().tuesday.at(cur_time).do( self.schedule_on_days_interval,((uname,app_id,end_time,self.uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd)))
-        elif(d.lower()=="wednesday"):
-            # self.uid_job += ";wed"
-            job_id = schedule.every().wednesday.at(cur_time).do( self.schedule_on_days_interval,((uname,app_id,end_time,self.uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd)))
-        elif(d.lower()=="thursday"):
-            # self.uid_job += ";thu"
-            job_id = schedule.every().thursday.at(cur_time).do( self.schedule_on_days_interval,((uname,app_id,end_time,self.uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd)))
-        elif(d.lower()=="friday"):
-            # self.uid_job += ";fri"
-            job_id = schedule.every().friday.at(cur_time).do( self.schedule_on_days_interval,((uname,app_id,end_time,self.uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd)))
-        elif(d.lower()=="saturday"):         
-            # self.uid_job += ";sat"
-            job_id = schedule.every().saturday.at(cur_time).do( self.schedule_on_days_interval,((uname,app_id,end_time,self.uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd)))
-        elif(d.lower()=="sunday"):
-            #print("helloooo")
-            # self.uid_job += ";sun"
-            job_id = schedule.every().sunday.at(cur_time).do( self.schedule_on_days_interval,((uname,app_id,end_time,self.uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd)))
-        
-        return job_id
     
-    
+        
+        
     
     def startScheduling(self,dataDc):
 
@@ -253,7 +195,6 @@ class Scheduler:
             # self.uid_job = placeholder+";"+uname+";"+app_id+";"+algoID
             if request_type=="immediate":
                 # self.uid_job += ";i"
-
                 now = datetime.now()
                 cur_time = now + \
                     timedelta(seconds=1)
@@ -286,36 +227,12 @@ class Scheduler:
                     # self.uid_job += ";sun"
                     job_id = schedule.every().sunday.at(cur_time).do( self.schedule_on_days,((uname,app_id,end_time,self.uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd)))
                 
-
-                # job_id = self.schedule_immediate(uname,app_id,end_time,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd)
                 
                 self.uid_job_dict[self.uid_job] = job_id
             else: # cron job
                 if interval != "None":
-
-                    end_time = int(duration)
-                    now = datetime.now()
-                    #print("interval",now)
-
-                    end_time = now + \
-                            timedelta(minutes=end_time)
-
-                    end_time = end_time.strftime("%H:%M:%S")
-                    job_id = self.schedule_immediate(uname,app_id,end_time,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd)
-                
-                    self.uid_job_dict[self.uid_job] = job_id
-                    # schObj.run_thread()
-                    
-                    end_time = int(duration)
-                    #print(end_time)
-                    # job_id = schedule.every().day.at(end_time).do(self.job_done_interval,((uname,app_id,end_time,uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd))) 
-                           
-
-
-
-
                     # self.uid_job += ";n"
-                    # end_time = int(duration)
+                    end_time = int(duration)
                     job_id = schedule.every(int(interval)).minutes.do(self.schedule_interval,((uname,app_id,end_time,self.uid_job,algoID,sensorList,devID,RAM,CPU,placeholder,location,to_snd)))
                     # self.uid_job += ";n"+str(random.randint(0,10000))
                     self.uid_job_dict[self.uid_job] = job_id

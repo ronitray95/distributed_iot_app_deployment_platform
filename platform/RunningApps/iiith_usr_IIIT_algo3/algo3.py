@@ -9,19 +9,26 @@ api = API.sensorapi()
 
 min_radius = 20
 
-gps = api.getData("GPS")["data"]  #{data:[[placeholderID,[x,y]],[placeholderID,[x,y]]}
-print("Algo3 GPS",gps)
+while True:
+    time.sleep(1)
+    gps = api.getData("GPS")["data"]  #{data:[[placeholderID,[x,y]],[placeholderID,[x,y]]}
+    print("Algo3 GPS",gps)
 
-i=0
-while i<len(gps):
-    j=i+1
-    while j<len(gps):
-        k=j+1
-        len1 = calculate_dist(gps[i][1],gps[j][1])
-        while k<len(gps):
-            len2 = calculate_dist(gps[j][1],gps[k][1])
-            if len1 < min_radius and len2 < min_radius:
-                ack = api.setData(k, "GPS", 1)
-                if ack:
-                    api.display(f'{time.ctime()} :: Buses found close!! Buzzer sent to {gps[i][0]} {gps[j][0]}')
+    i=0
+    while i<len(gps):
+        j=i+1
+        while j<len(gps):
+            k=j+1
+            len1 = calculate_dist(gps[i][1],gps[j][1])
+            while k<len(gps):
+                len2 = calculate_dist(gps[j][1],gps[k][1])
 
+                print(len1,len2)
+                
+                if len1 < min_radius and len2 < min_radius:
+                    ack = api.setData(k, "GPS", 1)
+                    if ack:
+                        api.display(f'{time.ctime()} :: Buses found close!! Buzzer sent to {gps[i][0]} {gps[j][0]}')
+                k+=1
+            j+=1
+        i+=1

@@ -29,6 +29,7 @@ def createList(idby, types):
 
 
 def createConfig(conf, path):
+    print(path)
     with open(path+'/conf.json', 'w') as f:
         data = {}
         """for i in sensorList:
@@ -65,15 +66,12 @@ def appStop(jID):
 
 def handler_fun(message):
 
-    #print(message)
     if message['action'] == 'start':
         action = message["action"]  # start/stop
         jID = message["jID"]
         appID = message["appID"]
         algoID = message["algoID"]
         types = message['sensorList'] #[type1,type2...]
-        #idby = message["idby"] #value: [loc/placeholder, name]
-        #sensorList = message["sensorList"]  # ["temp_t123","ac_a123"]
         userID = message["userID"]
         devID = message["devID"]
         RAM = message["RAM"]
@@ -95,6 +93,11 @@ def handler_fun(message):
 
         conf = {'sensors':sensorList,'userID':userID,'outputfile':'../Data/'+outputfile}
         dirpath = path+outputfile
+        try:
+            os.mkdir(dirpath)
+        except Exception:
+            pass
+
         createConfig(conf, dirpath)
         appExe(jID, algoID, appID, userID, devID, RAM, CPU, dirpath)
     
@@ -106,6 +109,9 @@ def schedular_service():
     consumer = KafkaConsumer('DP', bootstrap_servers='localhost:9092',
                              value_deserializer=lambda m: json.loads(m.decode('utf-8')))
     for mess in consumer:
+
+        print("Request Recived from Scheduler")
+        
         _thread.start_new_thread(handler_fun,(mess.value,))
 
 
@@ -130,7 +136,7 @@ def trigger_service():
         jID += 1
 
 def main():
-
+        print("***************appService Started***************")
         t1 = threading.Thread(target=schedular_service)
         t2 = threading.Thread(target=trigger_service)
         t1.start()

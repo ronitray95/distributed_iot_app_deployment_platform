@@ -1,7 +1,0 @@
-{
-    "files" : ["main.py", "API.py", "commAPI.py", "comm_module.py"],
-    "sensor_types" : ["temp","AC"],
-    "controller_types": ["controller1", "controller2"],
-     "RAM":"200MB",
-     "CPU": "hsad"
-}

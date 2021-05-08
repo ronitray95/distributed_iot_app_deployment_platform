@@ -1,3 +1,0 @@
-amanmundru,amanmundru@gmail.com,Developer,1234
-aman,123@gmail.com,User,abcd
-hkr,123@gmail.com,Developer,123
