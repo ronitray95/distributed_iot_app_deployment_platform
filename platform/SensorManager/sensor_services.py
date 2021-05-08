@@ -49,7 +49,6 @@ def install():
 
             with open(registry_path, 'a') as f:
                 line = stype + ":" + desc + "_" + loc + ":" + ip + "_" + port
-                # print(line)
                 f.write(line + '\n')
             return render_template("success.html",message="success")
         else:
@@ -67,16 +66,12 @@ def getdata():
         data.append(d)
 
     payload = {"data": data}
-    # return jsonify(payload)
-
     response = app.response_class(
         response=json.dumps(payload),
         status=200,
         mimetype='application/json'
     )
     return response
-
-    #return {"sensor", str(data)}, 200
 
 
 @app.route("/set-data", methods=["POST"])
@@ -95,7 +90,6 @@ def setdata():
         mimetype='application/json'
     )
     return response
-    #return {'status': 1}
 
 
 def init_services():
@@ -104,5 +98,3 @@ def init_services():
 
 if __name__ == "__main__":
     init_services()
-
-	# os.system('sudo bash run.sh')

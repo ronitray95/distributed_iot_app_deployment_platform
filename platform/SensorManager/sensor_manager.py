@@ -9,8 +9,6 @@ import sys
 from simulators import *
 import csv
 
-
-
 # TODO: Uncomment next line
 sys.path.insert(0, sys.path[0][:sys.path[0].rindex('/')] + '/comm_manager')
 import comm_module as cm
@@ -25,25 +23,15 @@ def dummy1(topicid, handler):
     cm.consume_msg(topicid, handler)
 
 
-def get_sensor_id(msg):
-    # Todo: kafka consumer to sensor topic
-    # msg = {sensor_type = 'temp', loc = 'l1', count = 5}
-    pass
-
-
 '''
 Binds the sensor data to a topic
 :param sensor_info = {'type': stype, 'ip': ip, 'port': port, 'topic': topic} 
 
 '''
-
-
 def bind_sensor(sensor_info):
     global sensor_objects
     
     sensor_type = sensor_info['type']
-    print("Type")
-    #print(sensor_objects)
 
     if sensor_type == 'TEMP':
         topic = sensor_info['topic']
@@ -69,21 +57,11 @@ def bind_sensor(sensor_info):
         print("ERROR: Invalid Sensor Type")
         return
 
-    # elif sensor_type == 'AC':
-    #     ac_up(sensor_info)
-
     t = threading.Thread(target=bind_data.simulate, kwargs={"sensor_obj": obj})
     t.start()
 
 
 def get_data(topic):
-    # sensor_topic = msg['msg']
-    #print(topic)
-    # with open("sensor_registry.txt", 'r') as f:
-    #     instances = f.readlines()
-
-    # for instance in instances:
-    #     sinfo, nwinfo, topic = instance.split(':')
     if topic.startswith("BIOMETRIC"):
         time.sleep(10)
 
@@ -92,12 +70,8 @@ def get_data(topic):
         msg = message.value
         break
 
-    #print("******",msg,"******")
+    print(f"SensorID: {topic} ===> Data: {msg['data']}")
     return msg['data']
-    # producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
-    # producer.send('SM_to_Deployer_data', data)
-    # producer.flush()
-    # producer.close()
 
 
 def run_sensors():
@@ -135,37 +109,20 @@ def run_sensors():
 
         time.sleep(20)
 
-        # Testing controller functioning
-        # print("Turning off AC.......")
-        # msg = {"type": 'temp_0', "value": 0}
-        # controller(msg)
-
     registry.close()
-    # running.close()
 
 
 def set_data(msg):
     global sensor_objects
-
-    #print(sensor_objects)
-
     topic = msg['topic']
     status = msg['value']
-    print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$44",topic,status)
-    # msg = {"status": status}
-    # bind_data.dummy_ac(status)
-    # cm.send_message(topic, msg)
-    # obj = sensor_objects[topic]
-    # obj.controller = status
     consumer = KafkaConsumer(topic, bootstrap_servers='localhost:9092', group_id=None, value_deserializer=lambda m: json.loads(m.decode('utf-8')))
     for message in consumer:
         msg = message.value
         break
-
-    # print("******",data,"******")
-    print("$$$$$$$$$$$$$$$$$$$",msg)
+    old_val = msg['controller']
     msg['controller'] = status
-    print("$$$$$$$$$$$",msg)
+    print(f"SensorID: {topic} ===> Controller: (before){old_val} --> (after){status}")
     producer = KafkaProducer(bootstrap_servers='localhost:9092',
                              value_serializer=lambda v: json.dumps(v).encode('utf-8'))
     producer.send(topic, msg)
@@ -175,11 +132,3 @@ def start():
     #   Create a kafka topic to start sensor manager services
     t1 = threading.Thread(target=run_sensors)
     t1.start()
-
-    # t2 = threading.Thread(target=dummy1, kwargs={'topicid': 'Deployer_to_SM_data', 'handler': get_data})
-    # t2.start()
-    #
-    # t3 = threading.Thread(target=dummy1, kwargs={'topicid': 'Deployer_to_SM_get', 'handler': controller})
-    # t3.start()
-    # t2 = threading.Thread(target=dummy2, kwargs={'topicId': 'Sensor_Manager_to_Deployer', 'handler':get_sensor_id})
-    # t2.start()

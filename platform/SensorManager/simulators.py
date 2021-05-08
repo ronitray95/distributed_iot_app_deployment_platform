@@ -1,6 +1,7 @@
 import random
 import time
 
+
 class ACController:
     def __init__(self, id, name=None, loc=None, status=-1, ip='0.0.0.0', port='1234'):
         self.type = 'ac'
@@ -56,6 +57,7 @@ class TempSensor:
         """
         self.data = random.randrange(self.low, self.high)
         return self.data, self.controller
+
 
 class LuxSensor:
     def __init__(self, id, desc, name=None, loc=None, ip='0.0.0.0', port='1234'):
