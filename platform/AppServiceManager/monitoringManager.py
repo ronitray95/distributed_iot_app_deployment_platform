@@ -5,14 +5,13 @@ from _thread import *
 import time
 import sys
 
-components = ['deployment', 'logger', 'node_manager', 'comm_module',
-              'scheduler', 'appManager', 'sensor_services', 'sensor_manager']
+components = ['appService', 'logger', 'node_manager','scheduler', 'appManager', 'sensor_services', 'init']
 
-bash_restart_files = ['start.sh', 'start.sh', 'start.sh',
-                      'start.sh', 'start.sh', 'start.sh', 'start.sh', 'start.sh']
-folder_names = ['/AppServiceManager/', '/AppServiceManager/', '/AppServiceManager/',
-                '/comm_manager/', '/scheduler/', '/AppManager/', '/SensorManager/', '/SensorManager/']
+bash_restart_files = ['startDeployer.sh', 'startLogger.sh', 'startNM.sh','start.sh', 'start.sh', 'startService.sh', 'startINIT.sh']
 
+folder_names = ['/AppServiceManager/', '/AppServiceManager/', '/AppServiceManager/', '/scheduler/', '/AppManager/', '/SensorManager/', '/SensorManager/']
+
+ignored_components = []
 
 def startMonitor():
     basePath = sys.path[0][:sys.path[0].rindex('/')]
@@ -34,6 +33,9 @@ def startMonitor():
         process = subprocess.Popen(
             cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         my_pid, err = process.communicate()
+
+        if components[i] in ignored_components:
+            continue
 
         if len(x) != 0:  # len(my_pid.splitlines()) > 0:
             print('Service', components[i].upper(), 'running normally')
@@ -60,4 +62,4 @@ def startMonitor():
 
 if __name__ == '__main__':
     start_new_thread(startMonitor, ())
-    input('Hit ENTER to quit\n')
+    input('MONITORING MANAGER is running. Hit ENTER to quit\n')

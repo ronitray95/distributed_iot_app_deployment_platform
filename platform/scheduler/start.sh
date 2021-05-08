@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-./sensor_manager.py
+gnome-terminal -x ./scheduler.py

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import schedule 
 import time 
 import threading 
@@ -7,7 +9,6 @@ import random
 from datetime import datetime, timedelta
 from datetime import date
 import calendar
-#import comm_module as cm
 import sys
 
 sys.path.insert(0, sys.path[0][:sys.path[0].rindex('/')] + '/comm_manager')

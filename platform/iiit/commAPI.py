@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import time
 #import comm_module as cm
 import requests

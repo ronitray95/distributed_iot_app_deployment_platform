@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import _thread
 import requests
 import json
