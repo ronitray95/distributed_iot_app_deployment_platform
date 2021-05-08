@@ -115,10 +115,11 @@ class BiometricSensor:
 iiit_loc = [30.44523, 40.54232]
 barricades = [[20.34535, 41.34234], [18.42342, 35.45453], [
     24.42342, 56.45453], [27.42342, 60.45453], [10.42342, 21.45453]]
-places = [[12.34535, 23.34234], [15.42342, 17.45453], [19.42342, 43.45453], [
-    27.321, 60.314], [10.4346, 46.332], [33.4346, 32.332], [10.2, 19.332], [23.12, 49.55]]
+places = [[12.34535, 23.34234], [15.42342, 17.45453], [19.42342, 43.45453],
+          [27.321, 60.314], [10.4346, 46.332], [33.4346, 32.332], [10.2, 19.332], [23.12, 49.55],
+          [20.321, 61.314], [30.4346, 45.332], [9.4346, 32.332], [17.2, 25.332], [23.12, 35.55]]
 
-gps_weights = [0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+gps_weights = [0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
 
 
 class GPSSensor:
@@ -144,3 +145,21 @@ class GPSSensor:
 
         return self.data, self.controller
 
+
+class Oximeter:
+    def __init__(self, id, desc, name=None, loc=None, ip='0.0.0.0', port='1234'):
+        self.type = 'OXIMETER'
+        self.id = id
+        self.name = name
+        self.ip = ip
+        self.port = port
+        self.location = loc
+        self.low = 85
+        self.high = 96
+        self.controller = -1
+        self.data = 0
+        self.placeholder = desc
+
+    def genRandom(self):
+        self.data = random.randrange(self.low, self.high)
+        return self.data, self.controller

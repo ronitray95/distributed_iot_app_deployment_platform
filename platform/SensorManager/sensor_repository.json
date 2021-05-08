@@ -22,5 +22,11 @@
       "sensor_id":"acc1",
       "name":"biometric",
       "controller": "None"
+   },
+   "OXIMETER": {
+      "id" : 1,
+      "sensor_id":"acc1",
+      "name":"oximeter",
+      "controller": "None"
    }
 }
