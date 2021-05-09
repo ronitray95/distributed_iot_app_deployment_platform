@@ -28,3 +28,4 @@ class Server:
 
 KAFKA_TOPIC_SERVER_LIST = 'server_list'
 KAFKA_TOPIC_NODE_SERVER_ASSIGN_LIST = 'node-server-assign'
+KAFKA_TOPIC_LOGGER = 'logger-listen'

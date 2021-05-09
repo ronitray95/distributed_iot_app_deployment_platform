@@ -84,7 +84,7 @@ def deploy_here_loadbalancer():
     #('server1', {'host': '127.0.0.1', 'port': 5010, 'applications': 0, 'idle_cpu': 80.6, 'used_mem': 53.4})
     for server in capacity.items():
         if(server[1]['applications'] > 2 or server[1]['idle_cpu'] < 30 or server[1]['used_mem'] > 80):
-            create_new = True
+            return server[1]['host'], server[1]['port']
             continue
         elif(server[1]['applications'] <= 2 and server[1]['idle_cpu'] > 30 and server[1]['used_mem'] < 80):
             return server[1]['host'], server[1]['port']

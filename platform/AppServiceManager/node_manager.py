@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from _thread import *
 import random
 import string
@@ -19,6 +21,7 @@ server_load = {}
 apps_load = []
 apps_pid = []
 last_port = 0
+user_mapping = {}
 
 with open('runtime_server.json') as f:
     server_list = json.loads(f.read())
@@ -93,20 +96,22 @@ def runApplication():
     cpu_req = request.args.get('cpu_req')
     app_path = request.args.get('app_path')
     algo_path = request.args.get('algo_path')
+    jID = request.args.get('jID')
     ip = request.host
     port = request.host
-    if app_id is None:
-        return {'msg': 'App ID is absent'}, 400
-    if user_id is None:
-        return {'msg': 'User ID is absent'}, 400
+    # if app_id is None:
+    #     return {'msg': 'App ID is absent'}, 400
+    # if user_id is None:
+    #     return {'msg': 'User ID is absent'}, 400
     if app_path is None:
         return {'msg': 'App Path is absent'}, 400
-    if algo_path is None:
-        return {'msg': 'Algo Path is absent'}, 400
+    # if algo_path is None:
+    #     return {'msg': 'Algo Path is absent'}, 400
     apps_load.append(Application(app_id, user_id, sensor_list,
                                  ip, port, ram_req, cpu_req, app_path, algo_path))
     pid = subprocess.Popen([sys.executable, app_path])
     apps_pid.append(pid)
+    user_mapping[jID]=pid
     return {'msg': 'Success'}, 200
     # execute APP
 
@@ -115,20 +120,38 @@ def runApplication():
 def stopApplication():
     if request.method == 'POST':
         return 'Not supported', 401
-    app_id = request.args.get('app_id')
-    user_id = request.args.get('user_id')
-    if app_id is None:
-        return {'msg': 'App ID is absent'}, 400
-    if user_id is None:
-        return {'msg': 'User ID is absent'}, 400
-    for i in range(0, len(apps_load)):
-        ap = apps_load[i]
-        if ap.app_id == app_id and ap.user_id == user_id:
-            apps_pid[i].terminate()
-            apps_load.pop(i)
-            apps_pid.pop(i)
-            return {'msg': 'Success'}, 200
-    return {'msg': 'App ID not found'}, 401
+    # app_id = request.args.get('app_id')
+    # user_id = request.args.get('user_id')
+    jID = request.args.get('jID')
+    if jID is None:
+        return {'msg': 'Job ID is absent'}, 400
+    # if user_id is None:
+    #     return {'msg': 'User ID is absent'}, 400
+    # for i in range(0, len(apps_load)):
+    #     ap = apps_load[i]
+    #     if ap.app_id == app_id and ap.user_id == user_id:
+    #         apps_pid[i].terminate()
+    #         apps_load.pop(i)
+    #         apps_pid.pop(i)
+    #         return {'msg': 'Success'}, 200
+    if jID not in user_mapping:
+        return {'msg': 'App ID not found'}, 401
+    else:
+        user_mapping[jID].terminate()
+        print('Application with job ID',jID,'terminated')
+        return {'msg': 'Success'}, 200
+
+
+@app.route('/trigger')
+def triggerApplication():
+    if request.method == 'POST':
+        return 'Not supported', 401
+    app_path = request.args.get('app_path')
+    if app_path is None:
+        return {'msg': 'App Path is absent'}, 400
+    pid = subprocess.Popen([sys.executable, app_path])
+    apps_pid.append(pid)
+    return {'msg': 'App started'}, 200
 
 
 init_servers()

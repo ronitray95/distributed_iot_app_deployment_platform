@@ -4,9 +4,6 @@ import threading
 from _thread import *
 import time
 
-
-
-
 def consume_msg(topic,handler_fun):
 
 	consumer = KafkaConsumer(topic,bootstrap_servers='localhost:9092',value_deserializer=lambda m: json.loads(m.decode('utf-8')))
@@ -16,14 +13,10 @@ def consume_msg(topic,handler_fun):
 		th.start()
 
 
-
-
-
 def handler_fun(msg):
 	print(msg)
 	# print("Handle your incomming msg dict here")
 	# print(msg)
-
 
 def to_recv():
 	# "AS" is topic agreed between two module

@@ -11,5 +11,6 @@ def validate_instance(stype):
     else:
         return False
 
+
 if __name__ == "__main__":
     print(validate_instance('gas'))
