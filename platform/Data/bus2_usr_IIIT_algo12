@@ -1,0 +1,14 @@
+Sun May  9 01:57:46 2021 :: bus2:58871 => Fare : 201.6903448991299
+Sun May  9 01:58:03 2021 :: bus2:High temperature(33C) detected! AC has been Turned ON
+Sun May  9 01:58:10 2021 :: bus2:Low temperature(19C) detected! AC has been Turned OFF
+Sun May  9 01:58:11 2021 :: bus2:High intensity light(16) detected! Lights has been Turned OFF
+Sun May  9 01:58:12 2021 :: bus2:62512 => Fare : 88.64663193562401
+Sun May  9 01:58:19 2021 :: bus2:High temperature(34C) detected! AC has been Turned ON
+Sun May  9 01:58:25 2021 :: bus2:Low temperature(18C) detected! AC has been Turned OFF
+Sun May  9 01:58:27 2021 :: bus2:Low intensity light(1) detected! Lights has been Turned ON
+Sun May  9 01:58:37 2021 :: bus2:2460 => Fare : 201.6903448991299
+Sun May  9 01:58:46 2021 :: bus2:High intensity light(18) detected! Lights has been Turned OFF
+Sun May  9 01:58:59 2021 :: bus2:High temperature(31C) detected! AC has been Turned ON
+Sun May  9 01:59:03 2021 :: bus2:86383 => Fare : 87.37601930695858
+Sun May  9 01:59:05 2021 :: bus2:Low temperature(16C) detected! AC has been Turned OFF
+Sun May  9 01:59:12 2021 :: bus2:Low intensity light(1) detected! Lights has been Turned ON

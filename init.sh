@@ -5,13 +5,13 @@
 
 #Initiating Kafka server
 
-#cd ~/kafka/bin/
-#gnome-terminal --window -- ./zookeeper-server-start.sh ~/kafka/config/zookeeper.properties
-#sleep 5
-#gnome-terminal --window -- ./kafka-server-start.sh ~/kafka/config/server.properties
-#sleep 7
+cd ~/kafka/bin/
+gnome-terminal --window -- ./zookeeper-server-start.sh ~/kafka/config/zookeeper.properties
+sleep 5
+gnome-terminal --window -- ./kafka-server-start.sh ~/kafka/config/server.properties
+sleep 7
 
-#cd -
+cd -
 cd platform/AppManager
 pwd
 gnome-terminal --window -- ./appManager.py

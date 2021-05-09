@@ -25,11 +25,9 @@ def checkBIO():
     while count <= 15:
     
         biometric = api.getData("BIOMETRIC")["data"][0]
-        print(gps)
         fare = calculate_fare(gps[1], iiit_loc)
         api.display(f'{time.ctime()} :: {gps[0]}:{biometric[1]} => Fare : {fare}')
         api.sendMail(f'{time.ctime()} :: {gps[0]}:{biometric[1]} => Fare : {fare}')
-        print(fare)
         count += 1
 
 gps = api.getData("GPS")["data"][0]
@@ -39,26 +37,13 @@ t1.start()
 lflag=0
 tflag=0
 while True:
-    #timestamp = time.ctime()
-    #{data:[[placeholderID, personID]]}
-    #print(biometric)
+    
     gps = api.getData("GPS")["data"][0] #{data:[[placeholderID, [x, y]]}
-    print(gps[1])
-    
-    #print(biometric)
-    #print(gps)
-    
+
     if gps[1] != iiit_loc and count > 0:
         
-        #if len(biometric) != 0:
-        #    fare = calculate_fare(gps[1], iiit_loc)
-        #    api.display(f'{time.ctime()} :: {gps[0]}:{biometric[0]} => Fare : {fare}')
-        #    api.sendMail(f'{time.ctime()} :: {gps[0]}:{biometric[0]} => Fare : {fare}')
-        #    print(fare)
-    
         temp = api.getData("TEMP")["data"][0]
         lux = api.getData("LIGHT")["data"][0]
-        print('temp ',temp)
 
         if temp < 20 or temp > 30: 
         

@@ -96,6 +96,10 @@ def handler_fun(message):
 
         conf = {'sensors':sensorList,'userID':userID,'outputfile':'../Data/'+outputfile}
         dirpath = path+outputfile
+        
+        with open('../Data/'+outputfile, 'a') as f:
+            pass
+        
         try:
             os.mkdir(dirpath)
         except Exception:
@@ -108,6 +112,7 @@ def handler_fun(message):
         appExe(jID, algoID, appID, userID, devID, RAM, CPU, dirpath)
     
     else:
+        jID = message['jID']
         print(f'Request recived to STOP APP with Job ID: {jID}')
         appStop(message['jID'])
 

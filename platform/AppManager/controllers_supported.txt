@@ -1,4 +1,4 @@
-controller1
-controller2
-controller3
-controller4
+TEMP_0
+AC_0
+LIGHT_0
+BUZZER

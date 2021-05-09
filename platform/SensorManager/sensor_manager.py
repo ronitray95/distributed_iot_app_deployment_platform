@@ -14,7 +14,7 @@ sys.path.insert(0, sys.path[0][:sys.path[0].rindex('/')] + '/comm_manager')
 import comm_module as cm
 
 
-SENSOR_TYPES = {'TEMP': -1,'BIOMETRIC': -1, 'GPS': -1, 'LIGHT': -1}
+SENSOR_TYPES = {'TEMP': -1,'BIOMETRIC': -1, 'GPS': -1, 'LIGHT': -1, 'OXIMETER':-1}
 
 sensor_objects = {}
 
@@ -132,3 +132,4 @@ def start():
     #   Create a kafka topic to start sensor manager services
     t1 = threading.Thread(target=run_sensors)
     t1.start()
+    print("**************** Sensor Manager ******************")

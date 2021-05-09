@@ -175,8 +175,23 @@ def dashboard(usrname):
 @app.route("/<filename>/monitor",methods=["GET","POST"])
 def monitor(filename):
     if request.method=="GET":
+        
         with open("../Data/"+filename, 'r') as f:
             return '<br>'.join(f.read().split('\n'))
+
+        """with open('readline','w+') as r:
+        	line = r.read()
+        	print(line)
+        	with open('../Data/'+filename,'r') as f:
+        		data = f.read()
+        		l = data.split('\n')
+        		if len(l) > int(line):
+        			line = len(l)+1
+        			r.write(line)	
+        			return l[line]+'<br>'
+
+		"""
+
     if request.method=="POST":
         data=request.form
         req = dict(data)
@@ -188,6 +203,8 @@ def monitor(filename):
         	msg['jid']=filename.split('/')[-1]
         	msg['action']='stop'
         	cm.send_message("AS", msg)
+        	usr = filename.split('_')[1]
+        	return redirect(url_for('dashboard',usrname=usr))
 
     return render_template("monitor.html",filename=filename)
 

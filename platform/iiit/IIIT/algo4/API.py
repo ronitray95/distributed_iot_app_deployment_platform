@@ -13,12 +13,9 @@ class sensorapi(object):
     def binder(self):
         PARENT_DIR = os.path.dirname(os.path.abspath(__file__))
         filepath = os.path.join(PARENT_DIR, "conf.json")
-        #print(os.path.dirname(os.path.abspath(__file__)))
         with open(filepath, "r") as f:
             data = json.loads(f.read())
             print(data)
-            #print(os.getcwd())
-            #for i in data.keys():
             self.sensor = data['sensors']
             self.userID = data['userID']
             self.emailID = obj.getEmailID(self.userID)
@@ -40,6 +37,5 @@ class sensorapi(object):
     def getEmailID(self):
         return self.emailID
 
-    def trigger(self, algo):
-        path = os.path.abspath(algo)
+    def trigger(self, path):
         obj.trigger(path)
